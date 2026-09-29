@@ -1,6 +1,6 @@
-# AI agent guidelines for chanhdai.com
+# AI agent guidelines for 0verme Home
 
-Next.js 16 (App Router) portfolio, blog, and shadcn registry website.
+Next.js 16 (App Router) starter, documentation, and shadcn registry website.
 
 **Stack**: TypeScript, React 19, Tailwind CSS v4, shadcn/ui, MDX, Vitest, pnpm (Bun for scripts), Vercel
 
@@ -75,7 +75,7 @@ pnpm registry:validate  # Validate generated registry.json
 
 ### Local dev URL
 
-A dev server is usually already running behind `https://ncdai.localhost` (see `allowedDevOrigins` in `next.config.ts` and `NEXT_PUBLIC_APP_URL` in `.env.local`). Use that origin to test pages and routes, never `http://localhost:3000` or a raw port. It also makes generated absolute URLs match what the code produces.
+A dev server is usually available behind `https://overme-home.localhost` (see `allowedDevOrigins` in `next.config.ts` and `NEXT_PUBLIC_APP_URL` in `.env.local`). Use that origin to test pages and routes, never `http://localhost:3000` or a raw port. It also makes generated absolute URLs match what the code produces.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

@@ -3,27 +3,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { copyToClipboardWithEvent } from "@/utils/copy"
 import { useRouter } from "@bprogress/next/app"
-import { PenTool03Icon } from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
 import { useTiks } from "@rexa-developer/tiks/react"
 import {
-  AwardIcon,
   BookmarkIcon,
-  BoxIcon,
-  BriefcaseBusinessIcon,
   CornerDownLeftIcon,
-  DownloadIcon,
   FileTextIcon,
-  GraduationCapIcon,
-  LayersIcon,
-  LineChartIcon,
   MonitorIcon,
   MoonStarIcon,
-  QuoteIcon,
   RssIcon,
-  SquareDashedIcon,
   SunMediumIcon,
-  TextInitialIcon,
   TypeIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
@@ -52,13 +40,7 @@ import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 
 import { ChanhDaiMark, getMarkSVG } from "./chanhdai-mark"
 import { getWordmarkSVG } from "./chanhdai-wordmark"
-import {
-  FavouriteIcon,
-  GridViewIcon,
-  NewsIcon,
-  ReactIcon,
-  SearchIcon,
-} from "./icons"
+import { GridViewIcon, NewsIcon, ReactIcon, SearchIcon } from "./icons"
 import { Button } from "./ui/button"
 import { Kbd, KbdGroup } from "./ui/kbd"
 
@@ -110,85 +92,11 @@ const MENU_LINKS: CommandLinkItem[] = [
     shortcut: "GB",
   },
   {
-    title: "Craft",
-    href: "/craft",
-    kind: "page",
-    icon: <HugeiconsIcon icon={PenTool03Icon} aria-hidden />,
-    shortcut: "GR",
-  },
-  {
     title: "Blog",
     href: "/blog",
     kind: "page",
     icon: <NewsIcon />,
     shortcut: "GL",
-  },
-  {
-    title: "Sponsors",
-    href: "/sponsors",
-    kind: "page",
-    icon: <FavouriteIcon />,
-    shortcut: "GS",
-  },
-  {
-    title: "Bookmarks",
-    href: "/bookmarks",
-    kind: "page",
-    icon: <BookmarkIcon />,
-    shortcut: "GM",
-  },
-  {
-    title: "Insights",
-    href: "/insights",
-    kind: "page",
-    icon: <LineChartIcon />,
-    shortcut: "GI",
-  },
-  {
-    title: "Testimonials",
-    href: "/testimonials",
-    kind: "page",
-    icon: <QuoteIcon strokeWidth={1.5} />,
-    shortcut: "GT",
-  },
-]
-
-const PORTFOLIO_LINKS: CommandLinkItem[] = [
-  {
-    title: "Hello",
-    href: "/#hello",
-    kind: "page",
-    icon: <TextInitialIcon />,
-  },
-  {
-    title: "Stack",
-    href: "/#stack",
-    kind: "page",
-    icon: <LayersIcon />,
-  },
-  {
-    title: "Experience",
-    href: "/#experience",
-    kind: "page",
-    icon: <BriefcaseBusinessIcon />,
-  },
-  {
-    title: "Education",
-    href: "/#education",
-    kind: "page",
-    icon: <GraduationCapIcon />,
-  },
-  {
-    title: "Projects",
-    href: "/#projects",
-    kind: "page",
-    icon: <BoxIcon />,
-  },
-  {
-    title: "Recognition",
-    href: "/#recognition",
-    kind: "page",
-    icon: <AwardIcon />,
   },
 ]
 
@@ -201,12 +109,6 @@ const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
 }))
 
 const OTHER_LINK_ITEMS: CommandLinkItem[] = [
-  {
-    title: "Download vCard",
-    href: "/vcard",
-    kind: "command",
-    icon: <DownloadIcon />,
-  },
   {
     title: "llms.txt",
     href: "/llms.txt",
@@ -477,13 +379,6 @@ export function CommandMenu({
               onLinkSelect={handleOpenLink}
             />
 
-            <CommandLinkGroup
-              heading="Portfolio"
-              links={PORTFOLIO_LINKS}
-              onLinkHighlight={handleLinkHighlight}
-              onLinkSelect={handleOpenLink}
-            />
-
             {componentsGroup}
 
             {blocksGroup}
@@ -524,26 +419,6 @@ export function CommandMenu({
               >
                 <TypeIcon />
                 Copy Logotype as SVG
-              </CommandMenuItem>
-
-              <CommandMenuItem
-                onHighlight={() => {
-                  setSelectedCommandKind("link")
-                }}
-                onSelect={() => handleOpenLink("/blog/chanhdai-brand")}
-              >
-                <SquareDashedIcon />
-                Brand Guidelines
-              </CommandMenuItem>
-
-              <CommandMenuItem onHighlight={handleCommandHighlight} asChild>
-                <a
-                  href="https://assets.chanhdai.com/chanhdai-brand.zip"
-                  download
-                >
-                  <DownloadIcon />
-                  Download Brand Assets
-                </a>
               </CommandMenuItem>
             </CommandGroup>
 

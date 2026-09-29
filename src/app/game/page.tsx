@@ -1,8 +1,6 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
 
-import { X_HANDLE } from "@/config/site"
-
 import { Game } from "./game"
 
 export const metadata: Metadata = {
@@ -22,8 +20,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: X_HANDLE,
-    creator: X_HANDLE,
     images: ["https://assets.chanhdai.com/images/blog/daikanoid.webp"],
   },
 }

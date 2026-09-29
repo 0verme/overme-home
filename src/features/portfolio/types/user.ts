@@ -7,7 +7,7 @@ export type User = {
   displayName: string
   /** Handle/username used in links or mentions */
   username: string
-  gender: "male" | "female" | "non-binary"
+  gender: "male" | "female" | "non-binary" | "unspecified"
   /** e.g. "he/him", "she/her", "they/them" */
   pronouns: string
   bio: string
@@ -15,9 +15,9 @@ export type User = {
   flipSentences: string[]
   /** General location for display */
   address: string
-  /** E.164 format, base64 encoded (https://t.io.vn/base64-string-converter) */
+  /** E.164 format, base64 encoded */
   phoneNumberB64: string
-  /** base64 encoded (https://t.io.vn/base64-string-converter) */
+  /** Base64 encoded */
   emailB64: string
   /** Personal/homepage URL */
   website: string
@@ -43,8 +43,6 @@ export type User = {
   namePronunciationUrl: string
   /** SEO keywords list for metadata */
   keywords: string[]
-  /** Time zone in IANA format (e.g., "Asia/Ho_Chi_Minh") */
+  /** Time zone in IANA format (e.g., "Etc/UTC") */
   timeZone: string
-  /** Profile/site start date in YYYY-MM-DD */
-  dateCreated: string
 }

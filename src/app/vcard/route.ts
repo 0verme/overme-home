@@ -10,6 +10,12 @@ export const dynamic = "force-static"
 export const dynamicParams = false
 
 export async function GET() {
+  if (!USER.emailB64 && !USER.phoneNumberB64) {
+    return new NextResponse("Contact details are not configured.", {
+      status: 404,
+    })
+  }
+
   const card = new VCard()
 
   card

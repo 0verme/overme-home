@@ -95,9 +95,9 @@ export function FloatingCarbonAds() {
             aria-hidden
           >
             <span className="translate-x-3 -translate-y-4 -rotate-6 text-right">
-              this ad pays
+              this ad supports
               <span className="block" />
-              my AI bill
+              open-source work
             </span>
             <HandwrittenArrow className="size-6" />
           </HandwrittenNote>

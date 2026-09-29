@@ -32,25 +32,29 @@ export function Overview() {
           )
         })}
 
-        <IntroItem>
-          <IntroItemIcon>
-            <MapPinIcon />
-          </IntroItemIcon>
-          <IntroItemContent>
-            <IntroItemLink
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(USER.address)}`}
-              aria-label={`Location: ${USER.address}`}
-            >
-              {USER.address}
-            </IntroItemLink>
-          </IntroItemContent>
-        </IntroItem>
+        {USER.address && (
+          <IntroItem>
+            <IntroItemIcon>
+              <MapPinIcon />
+            </IntroItemIcon>
+            <IntroItemContent>
+              <IntroItemLink
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(USER.address)}`}
+                aria-label={`Location: ${USER.address}`}
+              >
+                {USER.address}
+              </IntroItemLink>
+            </IntroItemContent>
+          </IntroItem>
+        )}
 
         <CurrentLocalTimeItem timeZone={USER.timeZone} />
 
-        <EmailItem emailB64={USER.emailB64} />
+        {USER.emailB64 && <EmailItem emailB64={USER.emailB64} />}
 
-        <PhoneItem phoneNumberB64={USER.phoneNumberB64} />
+        {USER.phoneNumberB64 && (
+          <PhoneItem phoneNumberB64={USER.phoneNumberB64} />
+        )}
 
         {/* <IntroItem>
           <IntroItemIcon>

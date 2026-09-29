@@ -36,7 +36,7 @@ function formatCredential({ credential, date }: CredentialRecognition) {
 
 const content = `# Recognition
 
-> Awards, certifications, and the trademarks and copyrights registered under my name. Newest first within each group.
+> Awards, certifications, and intellectual-property records. Newest first within each group.
 
 ## Awards (${awards.length})
 

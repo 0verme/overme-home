@@ -9,10 +9,7 @@ import { INTELLECTUAL_PROPERTY } from "./intellectual-property"
  * Entry keys shown first, in this order, so the strongest items stay above
  * the fold instead of sinking under newer but lesser entries.
  */
-export const RECOGNITION_PINNED_KEYS = [
-  "1b4db7eb-4057-5ddf-91e0-36dec72071f5", // Claude for Open Source Program
-  "05e1c61b-6dc1-11f0-8000-679dd01e0504", // Vercel OSS Program
-]
+export const RECOGNITION_PINNED_KEYS: string[] = []
 
 /**
  * Awards, certifications, and IP registrations merged into one list, newest

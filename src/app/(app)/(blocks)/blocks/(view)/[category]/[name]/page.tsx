@@ -105,7 +105,7 @@ function getSoftwareSourceCodeJsonLd(
     codeSampleType: "full (compile ready) solution",
     keywords: ["react", "shadcn", "block"],
     license: LICENSE.url,
-    author: { "@id": JSON_LD_ID.person },
+    author: { "@id": JSON_LD_ID.organization },
     isPartOf: {
       "@type": "CollectionPage",
       "@id": absoluteUrl("/blocks"),
