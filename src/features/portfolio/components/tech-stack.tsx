@@ -6,6 +6,8 @@ import { PanelTitleCopy } from "./panel-title-copy"
 const ID = "stack"
 
 export function TechStack() {
+  if (TECH_STACK.length === 0) return null
+
   return (
     <Panel id={ID}>
       <PanelHeader>

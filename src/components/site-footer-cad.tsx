@@ -12,7 +12,6 @@ import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand"
 import packageJson from "../../package.json"
 // Precomputed by `pnpm registry:build`, so the count costs no registry import.
 import registryStats from "../../registry-stats.json"
-import { ChanhDaiMark } from "./chanhdai-mark"
 
 const INSPIRED_BY = [
   "Tailwind CSS",
@@ -53,17 +52,6 @@ export function SiteFooterCad() {
           </div>
 
           <dl className="grid grid-cols-2 gap-px bg-line font-mono md:grid-cols-4">
-            <Field label="Forked from">
-              <a
-                className="link-underline"
-                href="https://github.com/ncdai/chanhdai.com"
-                target="_blank"
-                rel="noopener"
-              >
-                ncdai/chanhdai.com
-              </a>
-            </Field>
-
             <Field label="Build">
               <BuildValue build={build} />
             </Field>
@@ -98,7 +86,9 @@ export function SiteFooterCad() {
               </a>
             </Field>
 
-            <Field label="Typeface">Geist</Field>
+            <Field className="md:col-span-2" label="Typeface">
+              Geist
+            </Field>
 
             <Field className="col-span-2" label="Stack">
               <ul className="flex flex-col gap-0.5">
@@ -176,7 +166,9 @@ export function SiteFooterCad() {
             className="mr-auto text-muted-foreground transition-[color] hover:text-foreground"
             aria-label="Home"
           >
-            <ChanhDaiMark className="h-4" />
+            <span className="font-heading text-sm font-semibold tracking-tight">
+              0verme
+            </span>
           </Link>
 
           <a

@@ -3,7 +3,6 @@ import Link from "next/link"
 
 import { MAIN_NAV } from "@/config/site"
 import { Separator } from "@/components/ui/separator"
-import { ChanhDaiMark } from "@/components/chanhdai-mark"
 import { NavDesktop } from "@/components/nav-desktop"
 import { NavItemGitHub } from "@/components/nav-item-github"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -13,10 +12,6 @@ import { sortBookmarksNewestFirst } from "@/features/bookmark/lib/sort"
 import type { BookmarkPreview } from "@/features/bookmark/types"
 import { getAllDocs } from "@/features/doc/data/documents"
 import type { DocPreview } from "@/features/doc/types/document"
-
-const BrandContextMenu = dynamic(
-  () => import("@/components/brand-context-menu")
-)
 
 const CommandMenu = dynamic(() => import("@/components/command-menu"))
 
@@ -40,11 +35,13 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 max-w-screen overflow-x-clip bg-background px-2">
       <div className="screen-line-top screen-line-bottom mx-auto flex h-(--header-height) items-center gap-2 border-x screen-line-bottom-border screen-line-top-border pr-2 pl-4 group-has-data-[slot=layout-wide]/layout:container after:z-1 sm:gap-4 md:max-w-3xl">
-        <BrandContextMenu>
-          <Link href="/" aria-label="Home">
-            <ChanhDaiMark className="h-6 shrink-0" />
-          </Link>
-        </BrandContextMenu>
+        <Link
+          href="/"
+          className="shrink-0 font-heading text-sm font-semibold tracking-tight"
+          aria-label="0verme home"
+        >
+          0verme
+        </Link>
 
         <div className="flex-1" />
 
