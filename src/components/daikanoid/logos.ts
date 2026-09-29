@@ -19,13 +19,13 @@ export interface LogoDef {
   rowOffset?: number
 }
 
-const chanhdai: LogoDef = {
-  name: "ChanhDai",
+const overme: LogoDef = {
+  name: "0verme",
   brickWidth: 80,
   rowScale: 3,
   colOffset: 1,
   rowOffset: 0,
-  pattern: [".XX.XXX.", "X...X..X", "X...X..X", ".XX.XXX."],
+  pattern: [".XXXX.", "X....X", "X....X", ".XXXX."],
 }
 
 const eve: LogoDef = {
@@ -66,7 +66,7 @@ const vercel: LogoDef = {
   ],
 }
 
-export const LOGOS: LogoDef[] = [chanhdai, eve, vercel]
+export const LOGOS: LogoDef[] = [overme, eve, vercel]
 
 export function getLogoIndex(name?: string | null): number {
   if (!name) return 0

@@ -1,26 +1,20 @@
-import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
-import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
-import { USER } from "@/features/portfolio/data/user"
+import { SOURCE_CODE_GITHUB_URL } from "@/config/site"
 
-const content = `# About
+const content = `# 0verme Home
 
-${USER.about.trim()}
+A customizable open-source starter that preserves a reusable component registry, blocks, and documentation shell.
 
-## Personal Information
+## Explore
 
-- First Name: ${USER.firstName}
-- Last Name: ${USER.lastName}
-- Display Name: ${USER.displayName}
-- Location: ${USER.address}
-- Website: ${USER.website}
+- [Components](/components)
+- [Blocks](/blocks)
+- [Blog](/blog)
+- [Source code](${SOURCE_CODE_GITHUB_URL})
 
-## Social Links
+## Fork attribution
 
-${SOCIAL_LINKS.map((item) => `- [${item.title}](${item.href})`).join("\n")}
-
-## Tech Stack
-
-${TECH_STACK.map((item) => `- [${item.title}](${item.href})`).join("\n")}\n`
+This repository is a fork of [ncdai/chanhdai.com](https://github.com/ncdai/chanhdai.com). The original MIT license and copyright notice are retained.
+`
 
 export const revalidate = false
 export const dynamic = "force-static"

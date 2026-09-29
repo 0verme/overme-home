@@ -4,10 +4,8 @@ import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site"
 import type { BuildInfo } from "@/lib/build-info"
 import { getBuildInfo, getStack } from "@/lib/build-info"
 import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
-import { DmcaIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons"
+import { GitHubIcon } from "@/components/icons"
 import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand"
-import { SOCIAL } from "@/features/portfolio/data/social-links"
 
 // Imported here rather than through `@/config/site`, which client components
 // pull in, to keep the manifest out of client bundles.
@@ -28,20 +26,14 @@ const INSPIRED_BY = [
 ]
 
 const OPENPANEL_URL =
-  "https://openpanel.dev?utm_source=chanhdai.com&utm_medium=referral&utm_campaign=footer"
+  "https://openpanel.dev?utm_source=overme-home&utm_medium=referral&utm_campaign=footer"
 
-// Not derived from `SITE_INFO.url`: that follows `NEXT_PUBLIC_APP_URL` and
-// would read `ncdai.localhost` in dev.
-const SITE_TITLE = "chanhdai.com"
+const SITE_TITLE = "0verme Home"
 
 const SITE_SUBTITLE = packageJson.description
 
 /** Footer laid out as the title block of a technical drawing. */
 export function SiteFooterCad() {
-  const xLink = SOCIAL.x
-  const githubLink = SOCIAL.github
-  const linkedinLink = SOCIAL.linkedin
-
   const build = getBuildInfo()
   const stack = getStack()
 
@@ -61,14 +53,14 @@ export function SiteFooterCad() {
           </div>
 
           <dl className="grid grid-cols-2 gap-px bg-line font-mono md:grid-cols-4">
-            <Field label="Crafted by">
+            <Field label="Forked from">
               <a
                 className="link-underline"
-                href={xLink.href}
+                href="https://github.com/ncdai/chanhdai.com"
                 target="_blank"
                 rel="noopener"
               >
-                {xLink.handle}
+                ncdai/chanhdai.com
               </a>
             </Field>
 
@@ -82,12 +74,7 @@ export function SiteFooterCad() {
 
             <Field label="Registry">{registryStats.total} items</Field>
 
-            <Field label="Deployed on">
-              <span className="font-sans" aria-hidden>
-                ▲
-              </span>
-              <span className="sr-only">Vercel</span>
-            </Field>
+            <Field label="Status">Ready to customize</Field>
 
             <Field label="Source code">
               <a
@@ -122,19 +109,14 @@ export function SiteFooterCad() {
             </Field>
 
             <Field label="Analytics">
-              <ul className="flex flex-col gap-0.5">
-                <li>
-                  <a
-                    className="link-underline"
-                    href={OPENPANEL_URL}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    OpenPanel
-                  </a>
-                </li>
-                <li>Google Analytics</li>
-              </ul>
+              <a
+                className="link-underline"
+                href={OPENPANEL_URL}
+                target="_blank"
+                rel="noopener"
+              >
+                OpenPanel
+              </a>
             </Field>
 
             <Field label="For agents">
@@ -199,60 +181,12 @@ export function SiteFooterCad() {
 
           <a
             className="flex items-center transition-[color] hover:text-foreground"
-            href={xLink.href}
+            href={SOURCE_CODE_GITHUB_URL}
             target="_blank"
             rel="noopener"
-            aria-label="X Profile"
-          >
-            <XIcon className="size-4" />
-          </a>
-
-          <Separator
-            orientation="vertical"
-            className="data-vertical:h-4 data-vertical:self-center"
-          />
-
-          <a
-            className="flex items-center transition-[color] hover:text-foreground"
-            href={githubLink.href}
-            target="_blank"
-            rel="noopener"
-            aria-label="GitHub Profile"
+            aria-label="0verme Home source code on GitHub"
           >
             <GitHubIcon className="size-4" />
-          </a>
-
-          <Separator
-            orientation="vertical"
-            className="data-vertical:h-4 data-vertical:self-center"
-          />
-
-          <a
-            className="flex items-center transition-[color] hover:text-foreground"
-            href={linkedinLink.href}
-            target="_blank"
-            rel="noopener"
-            aria-label="LinkedIn Profile"
-          >
-            <LinkedInIcon className="size-4" />
-          </a>
-
-          <Separator
-            orientation="vertical"
-            className="data-vertical:h-4 data-vertical:self-center"
-          />
-
-          <a
-            className="flex items-center transition-[color] hover:text-foreground"
-            href={
-              process.env.NEXT_PUBLIC_DMCA_URL ||
-              "https://www.dmca.com/ProtectionPro.aspx"
-            }
-            target="_blank"
-            rel="noopener"
-            aria-label="DMCA.com Protection Status"
-          >
-            <DmcaIcon className="h-4 w-auto" />
           </a>
         </div>
       </div>

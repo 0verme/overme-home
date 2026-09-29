@@ -5,10 +5,10 @@ import puppeteer from "puppeteer"
 
 import { coverScenarios } from "./lib/cover-scenarios.mts"
 
-const baseUrl = process.env.URL || "https://ncdai.localhost"
+const baseUrl = process.env.URL || "https://overme-home.localhost"
 
 // `capture:sync` uploads this as `images/blog/{slug}.webp`, the cover URL in docs.
-const outputDir = path.join(process.cwd(), ".ncdai/screenshots/blog")
+const outputDir = path.join(process.cwd(), ".overme-home/screenshots/blog")
 
 const COVER = { width: 1200, height: 630 } as const
 

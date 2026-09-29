@@ -13,7 +13,7 @@ const allPosts = getBlogPosts()
 
 const content = `# Blog
 
-> Stories, milestones, and things I learn along the way.
+> Articles and documentation published by 0verme Home.
 
 Each link below returns the full post as Markdown. Drop the \`.md\` extension for the web page.
 

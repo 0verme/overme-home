@@ -1,35 +1,15 @@
-import { Suspense } from "react"
 import type { Metadata } from "next"
-import type { ProfilePage, WithContext } from "schema-dts"
+import Link from "next/link"
+import { ArrowRightIcon } from "lucide-react"
 
-import { CARBON_ADS } from "@/config/ads"
-import { JSON_LD_ID } from "@/config/json-ld"
-import { JsonLdScript } from "@/lib/json-ld"
-import { absoluteUrl, cn } from "@/lib/utils"
-import { FloatingCarbonAds } from "@/components/floating-carbon-ads"
-import { Blocks } from "@/features/portfolio/components/blocks"
-import { Blog } from "@/features/portfolio/components/blog"
-import { Components } from "@/features/portfolio/components/components"
-import { Education } from "@/features/portfolio/components/education"
-import { Experiences } from "@/features/portfolio/components/experiences"
-import { GitHubContributions } from "@/features/portfolio/components/github-contributions"
-import { Hello } from "@/features/portfolio/components/hello"
-import {
-  Insights,
-  InsightsSkeleton,
-} from "@/features/portfolio/components/insights"
-import { Overview } from "@/features/portfolio/components/overview"
-import { ProfileHeader } from "@/features/portfolio/components/profile-header"
-import { Projects } from "@/features/portfolio/components/projects"
-import { Recognition } from "@/features/portfolio/components/recognition"
-import { SocialLinks } from "@/features/portfolio/components/social-links"
-import { Sponsors } from "@/features/portfolio/components/sponsors"
-import { SponsorsCarousel } from "@/features/portfolio/components/sponsors-carousel"
-import { TechStack } from "@/features/portfolio/components/tech-stack"
-import { Testimonials } from "@/features/portfolio/components/testimonials"
-import { USER } from "@/features/portfolio/data/user"
+import { SOURCE_CODE_GITHUB_URL } from "@/config/site"
+import { Button } from "@/components/ui/button"
+import { GitHubIcon } from "@/components/icons"
 
 export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "A customizable open-source starter with reusable components and blocks.",
   alternates: {
     canonical: "/",
   },
@@ -37,90 +17,63 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <>
-      <JsonLdScript data={getProfilePageJsonLd()} />
-      {CARBON_ADS && <FloatingCarbonAds />}
+    <section className="mx-auto flex min-h-[70svh] max-w-3xl flex-col justify-center gap-8 px-4 py-20">
+      <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+        0verme / starter
+      </p>
 
-      <div className="[--separator-height:--spacing(8)] **:data-[slot=panel]:scroll-mt-[calc(var(--header-height)+var(--separator-height))]">
-        <div className="mx-auto md:max-w-3xl">
-          <ProfileHeader />
-          <Separator />
-
-          <SocialLinks />
-          <Overview />
-          <GitHubContributions />
-          <Separator />
-
-          <Hello />
-          <SponsorsCarousel />
-          <Testimonials />
-          <Separator />
-
-          <Components />
-          <Separator />
-
-          <Blocks />
-          <Separator />
-
-          <Blog />
-          <Separator />
-
-          <TechStack />
-          <Separator />
-
-          <Experiences />
-          <Separator />
-
-          <Education />
-          <Separator />
-
-          <Projects />
-          <Separator />
-
-          <Recognition />
-          <Separator />
-
-          <Suspense fallback={<InsightsSkeleton />}>
-            <Insights />
-          </Suspense>
-          <Separator />
-
-          <Sponsors />
-        </div>
+      <div className="space-y-4">
+        <h1 className="font-heading text-4xl font-medium tracking-tight sm:text-6xl">
+          Make this space yours.
+        </h1>
+        <p className="max-w-2xl text-lg text-muted-foreground">
+          Personal profile content has been cleared. This shell keeps the
+          reusable component and block registry ready for your next idea.
+        </p>
       </div>
-    </>
-  )
-}
 
-function getProfilePageJsonLd(): WithContext<ProfilePage> {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    "@id": absoluteUrl("/"),
-    dateCreated: new Date(USER.dateCreated).toISOString(),
-    dateModified: new Date().toISOString(),
-    // Reference the Person defined in the WebSite node (rendered globally in
-    // the root layout) so both blocks resolve to the same entity.
-    mainEntity: { "@id": JSON_LD_ID.person },
-  }
-}
+      <div className="flex flex-wrap gap-3">
+        <Button
+          className="gap-2"
+          nativeButton={false}
+          render={<Link href="/components" />}
+        >
+          Explore components
+          <ArrowRightIcon />
+        </Button>
+        <Button
+          variant="outline"
+          className="gap-2"
+          nativeButton={false}
+          render={<Link href="/blocks" />}
+        >
+          Browse blocks
+          <ArrowRightIcon />
+        </Button>
+      </div>
 
-function Separator({ className }: { className?: string }) {
-  return (
-    <div
-      className={cn(
-        "stripe-divider h-(--separator-height) w-full border-x",
-        className
-      )}
-    >
-      {/* <div
-        className="absolute -top-1.25 -left-1.25 z-2 flex size-2.25 border bg-background"
-        aria-hidden
-      />
-      <div
-        className="absolute -top-1.25 -right-1.25 z-2 flex size-2.25 border bg-background"
-        aria-hidden
-      /> */}
-    </div>
+      <p className="border-t pt-6 text-sm text-muted-foreground">
+        Forked from{" "}
+        <a
+          className="text-foreground link-underline"
+          href="https://github.com/ncdai/chanhdai.com"
+          target="_blank"
+          rel="noreferrer"
+        >
+          ncdai/chanhdai.com
+        </a>
+        . Original MIT copyright and trademark notices are retained.
+      </p>
+
+      <a
+        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        href={SOURCE_CODE_GITHUB_URL}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <GitHubIcon className="size-4" />
+        View 0verme/overme-home source
+      </a>
+    </section>
   )
 }

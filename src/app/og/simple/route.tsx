@@ -28,13 +28,22 @@ export async function GET(request: Request) {
       <div tw="absolute top-18 left-18 flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 256"
-          width={128}
+          viewBox="0 0 64 64"
+          width={64}
           height={64}
         >
+          <rect width="64" height="64" rx="14" fill="#fafafa" />
           <path
-            fill="currentColor"
-            d="M192 256H64v-64h128v64ZM448 64H320v128h128v64H256V0h192v64ZM64 192H0V64h64v128ZM512 192h-64V64h64v128ZM192 64H64V0h128v64Z"
+            d="M32 10c11 0 19 8 19 19v6c0 11-8 19-19 19S13 46 13 35v-6c0-11 8-19 19-19Z"
+            fill="none"
+            stroke="#09090b"
+            strokeWidth="6"
+          />
+          <path
+            d="m25 42 14-20"
+            stroke="#09090b"
+            strokeLinecap="round"
+            strokeWidth="5"
           />
         </svg>
       </div>

@@ -1,24 +1,16 @@
 {
-  "name": "chanhdai.com",
+  "name": "overme-home",
   "version": "0.1.0",
-  "description": "A pixel-perfect dev portfolio and shadcn registry.",
+  "description": "A customizable open-source starter with a component registry.",
   "homepage": "https://chanhdai.com",
   "license": "MIT",
   "author": {
-    "name": "Nguyen Chanh Dai",
-    "email": "dai@chanhdai.com",
-    "url": "https://github.com/ncdai"
+    "name": "0verme",
+    "url": "https://github.com/0verme"
   },
-  "contributors": [
-    {
-      "name": "Nguyen Chanh Dai",
-      "email": "dai@chanhdai.com",
-      "url": "https://github.com/ncdai"
-    }
-  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ncdai/chanhdai.com.git"
+    "url": "git+https://github.com/0verme/overme-home.git"
   },
   "scripts": {
     "dev": "next dev",

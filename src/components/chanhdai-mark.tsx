@@ -2,19 +2,27 @@ export function ChanhDaiMark(props: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 64 64"
       fill="none"
-      viewBox="0 0 512 256"
       aria-hidden
       {...props}
     >
+      <rect width="64" height="64" rx="14" fill="currentColor" />
       <path
-        fill="currentColor"
-        d="M192 256H64v-64h128v64ZM448 64H320v128h128v64H256V0h192v64ZM64 192H0V64h64v128ZM512 192h-64V64h64v128ZM192 64H64V0h128v64Z"
+        d="M32 10c11 0 19 8 19 19v6c0 11-8 19-19 19S13 46 13 35v-6c0-11 8-19 19-19Z"
+        stroke="var(--background)"
+        strokeWidth="6"
+      />
+      <path
+        d="m25 42 14-20"
+        stroke="var(--background)"
+        strokeLinecap="round"
+        strokeWidth="5"
       />
     </svg>
   )
 }
 
 export function getMarkSVG() {
-  return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 256 128"><path fill="currentColor" d="M96 128H32V96h64v32ZM224 32h-64v64h64v32h-96V0h96v32ZM32 96H0V32h32v64ZM256 96h-32V32h32v64ZM96 32H32V0h64v32Z"/></svg>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#09090b"/><path d="M32 10c11 0 19 8 19 19v6c0 11-8 19-19 19S13 46 13 35v-6c0-11 8-19 19-19Z" stroke="#fafafa" stroke-width="6"/><path d="m25 42 14-20" stroke="#fafafa" stroke-linecap="round" stroke-width="5"/></svg>`
 }

@@ -24,7 +24,7 @@ export function Timeline({
   return (
     <TimescaleRoot className={cn("w-full", className)} {...props}>
       <TimescaleHeader>
-        <TimescaleAge>Age</TimescaleAge>
+        {TIMELINE_BIRTH_YEAR !== null && <TimescaleAge>Age</TimescaleAge>}
         <TimescaleYear>Years</TimescaleYear>
       </TimescaleHeader>
 
@@ -35,9 +35,11 @@ export function Timeline({
           {TIMELINE_MILESTONES.map((milestone) => (
             <TimescaleItem key={milestone.year}>
               <TimescaleTick />
-              <TimescaleAge>
-                {milestone.year - TIMELINE_BIRTH_YEAR}
-              </TimescaleAge>
+              {TIMELINE_BIRTH_YEAR !== null && (
+                <TimescaleAge>
+                  {milestone.year - TIMELINE_BIRTH_YEAR}
+                </TimescaleAge>
+              )}
               <TimescaleYear>{milestone.year}</TimescaleYear>
               {milestone.content && (
                 <TimescaleContent className="typeset typeset-timescale">
