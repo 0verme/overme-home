@@ -1,6 +1,5 @@
 "use client"
 
-import { use } from "react"
 import { formatNumber } from "@/utils/format"
 import { format, parseISO } from "date-fns"
 import { LoaderIcon } from "lucide-react"
@@ -22,12 +21,10 @@ import {
 import { SOCIAL } from "@/features/portfolio/data/social-links"
 
 export function GitHubContributionGraph({
-  contributions,
+  contributions: data,
 }: {
-  contributions: Promise<Activity[]>
+  contributions: Activity[]
 }) {
-  const data = use(contributions)
-
   if (data.length === 0) {
     return null
   }

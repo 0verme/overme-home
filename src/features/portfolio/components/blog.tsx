@@ -18,6 +18,8 @@ const ID = "blog"
 export function Blog() {
   const allPosts = getBlogPosts()
 
+  if (allPosts.length === 0) return null
+
   return (
     <Panel id={ID}>
       <PanelHeader>

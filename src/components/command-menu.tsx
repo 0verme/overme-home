@@ -1,18 +1,16 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { copyToClipboardWithEvent } from "@/utils/copy"
 import { useRouter } from "@bprogress/next/app"
-import { useTiks } from "@rexa-developer/tiks/react"
 import {
   BookmarkIcon,
   CornerDownLeftIcon,
   FileTextIcon,
+  HomeIcon,
   MonitorIcon,
   MoonStarIcon,
   RssIcon,
   SunMediumIcon,
-  TypeIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -29,7 +27,6 @@ import {
   CommandList,
   CommandShortcut,
 } from "@/components/ui/command"
-import { toast } from "@/components/ui/toast"
 import { trackBookmarkClick } from "@/features/bookmark/lib/analytics"
 import { getBookmarkExternalHref } from "@/features/bookmark/lib/bookmark-link"
 import type { BookmarkPreview } from "@/features/bookmark/types"
@@ -38,8 +35,6 @@ import type { DocPreview } from "@/features/doc/types/document"
 import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons"
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 
-import { ChanhDaiMark, getMarkSVG } from "./chanhdai-mark"
-import { getWordmarkSVG } from "./chanhdai-wordmark"
 import { GridViewIcon, NewsIcon, ReactIcon, SearchIcon } from "./icons"
 import { Button } from "./ui/button"
 import { Kbd, KbdGroup } from "./ui/kbd"
@@ -74,7 +69,7 @@ const MENU_LINKS: CommandLinkItem[] = [
     title: "Home",
     href: "/",
     kind: "page",
-    icon: <ChanhDaiMark />,
+    icon: <HomeIcon />,
     shortcut: "GH",
   },
   {
@@ -147,8 +142,6 @@ export function CommandMenu({
 
   const [click] = useClickSound()
 
-  const { success: tiksSuccess } = useTiks()
-
   useHotkeys(
     "mod+k, slash",
     (e) => {
@@ -190,22 +183,6 @@ export function CommandMenu({
       }
     },
     [router]
-  )
-
-  const handleCopyText = useCallback(
-    (text: string, message: string) => {
-      setOpen(false)
-      copyToClipboardWithEvent(text, {
-        name: "command_menu_action",
-        properties: {
-          action: "copy",
-          text: text,
-        },
-      })
-      toast.add({ type: "success", title: message })
-      tiksSuccess()
-    },
-    [tiksSuccess]
   )
 
   const createThemeHandler = useCallback(
@@ -399,28 +376,6 @@ export function CommandMenu({
               onLinkHighlight={handleLinkHighlight}
               onLinkSelect={handleOpenLink}
             />
-
-            <CommandGroup heading="Brand Assets">
-              <CommandMenuItem
-                onHighlight={handleCommandHighlight}
-                onSelect={() => {
-                  handleCopyText(getMarkSVG(), "Mark as SVG copied")
-                }}
-              >
-                <ChanhDaiMark />
-                Copy Mark as SVG
-              </CommandMenuItem>
-
-              <CommandMenuItem
-                onHighlight={handleCommandHighlight}
-                onSelect={() => {
-                  handleCopyText(getWordmarkSVG(), "Logotype as SVG copied")
-                }}
-              >
-                <TypeIcon />
-                Copy Logotype as SVG
-              </CommandMenuItem>
-            </CommandGroup>
 
             <CommandGroup heading="Theme">
               <CommandMenuItem
@@ -622,7 +577,9 @@ function CommandMenuFooter({
       <div className="flex h-10" />
 
       <div className="absolute inset-x-0 bottom-0 flex h-10 items-center justify-between gap-2 rounded-b-2xl px-4 text-xs font-medium">
-        <ChanhDaiMark className="size-6 text-muted-foreground" />
+        <span className="font-heading text-sm font-semibold tracking-tight text-muted-foreground">
+          0verme
+        </span>
 
         <div className="flex items-center gap-2 max-sm:hidden">
           <span>{ENTER_ACTION_LABELS[selectedCommandKind ?? "page"]}</span>

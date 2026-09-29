@@ -1,4 +1,4 @@
-import { MapPinIcon } from "lucide-react"
+import { DatabaseIcon, MapPinIcon } from "lucide-react"
 
 import { USER } from "@/features/portfolio/data/user"
 
@@ -20,6 +20,15 @@ export function Overview() {
       <h2 className="sr-only">Overview</h2>
 
       <PanelContent className="grid gap-x-4 gap-y-2.5 sm:grid-cols-2">
+        {USER.bio && (
+          <IntroItem>
+            <IntroItemIcon>
+              <DatabaseIcon />
+            </IntroItemIcon>
+            <IntroItemContent>{USER.bio}</IntroItemContent>
+          </IntroItem>
+        )}
+
         {USER.jobs.map((job, index) => {
           return (
             <JobItem

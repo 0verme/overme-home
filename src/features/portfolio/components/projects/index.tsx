@@ -13,6 +13,8 @@ import { ProjectItem } from "./project-item"
 const ID = "projects"
 
 export function Projects() {
+  if (PROJECTS.length === 0) return null
+
   return (
     <Panel id={ID}>
       <PanelHeader>

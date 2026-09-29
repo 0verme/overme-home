@@ -1,15 +1,21 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
 
-import { SOURCE_CODE_GITHUB_URL } from "@/config/site"
-import { Button } from "@/components/ui/button"
-import { GitHubIcon } from "@/components/icons"
+import { cn } from "@/lib/utils"
+import { GitHubContributions } from "@/features/portfolio/components/github-contributions"
+import { Hello } from "@/features/portfolio/components/hello"
+import { Overview } from "@/features/portfolio/components/overview"
+import { ProfileHeader } from "@/features/portfolio/components/profile-header"
+import { Projects } from "@/features/portfolio/components/projects"
+import { SocialLinks } from "@/features/portfolio/components/social-links"
+import { TechStack } from "@/features/portfolio/components/tech-stack"
+import { PROJECTS } from "@/features/portfolio/data/projects"
+import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
+import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
+import { USER } from "@/features/portfolio/data/user"
 
 export const metadata: Metadata = {
   title: "Home",
-  description:
-    "A customizable open-source starter with reusable components and blocks.",
+  description: USER.bio,
   alternates: {
     canonical: "/",
   },
@@ -17,63 +23,43 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <section className="mx-auto flex min-h-[70svh] max-w-3xl flex-col justify-center gap-8 px-4 py-20">
-      <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-        0verme / starter
-      </p>
+    <div className="[--separator-height:--spacing(8)] **:data-[slot=panel]:scroll-mt-[calc(var(--header-height)+var(--separator-height))]">
+      <div className="mx-auto md:max-w-3xl">
+        <ProfileHeader />
+        <Separator />
 
-      <div className="space-y-4">
-        <h1 className="font-heading text-4xl font-medium tracking-tight sm:text-6xl">
-          Make this space yours.
-        </h1>
-        <p className="max-w-2xl text-lg text-muted-foreground">
-          Personal profile content has been cleared. This shell keeps the
-          reusable component and block registry ready for your next idea.
-        </p>
+        {SOCIAL_LINKS.length > 0 && <SocialLinks />}
+        <Overview />
+        <GitHubContributions />
+        <Separator />
+
+        <Hello />
+        {TECH_STACK.length > 0 && (
+          <>
+            <TechStack />
+            <Separator />
+          </>
+        )}
+        {PROJECTS.length > 0 ? (
+          <>
+            <Projects />
+            <Separator />
+          </>
+        ) : (
+          <span id="projects" className="block scroll-mt-24" aria-hidden />
+        )}
       </div>
+    </div>
+  )
+}
 
-      <div className="flex flex-wrap gap-3">
-        <Button
-          className="gap-2"
-          nativeButton={false}
-          render={<Link href="/components" />}
-        >
-          Explore components
-          <ArrowRightIcon />
-        </Button>
-        <Button
-          variant="outline"
-          className="gap-2"
-          nativeButton={false}
-          render={<Link href="/blocks" />}
-        >
-          Browse blocks
-          <ArrowRightIcon />
-        </Button>
-      </div>
-
-      <p className="border-t pt-6 text-sm text-muted-foreground">
-        Forked from{" "}
-        <a
-          className="text-foreground link-underline"
-          href="https://github.com/ncdai/chanhdai.com"
-          target="_blank"
-          rel="noreferrer"
-        >
-          ncdai/chanhdai.com
-        </a>
-        . Original MIT copyright and trademark notices are retained.
-      </p>
-
-      <a
-        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        href={SOURCE_CODE_GITHUB_URL}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <GitHubIcon className="size-4" />
-        View 0verme/overme-home source
-      </a>
-    </section>
+function Separator({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        "stripe-divider h-(--separator-height) w-full border-x",
+        className
+      )}
+    />
   )
 }

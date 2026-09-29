@@ -5,7 +5,7 @@ import { SOCIAL } from "@/features/portfolio/data/social-links"
 
 export const SITE_INFO = {
   name: "0verme",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://chanhdai.com",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://0verme.example",
   ogImage: "/og/simple?title=0verme&description=Open-source%20starter",
   description: "A customizable open-source starter with a component registry.",
   keywords: ["0verme", "open source", "UI components", "shadcn registry"],
@@ -23,16 +23,16 @@ export const META_THEME_COLORS = {
 
 export const MAIN_NAV: NavItem<Route>[] = [
   {
-    title: "Components",
-    href: "/components",
-  },
-  {
-    title: "Blocks",
-    href: "/blocks",
-  },
-  {
-    title: "Blog",
+    title: "Notes",
     href: "/blog",
+  },
+  {
+    title: "Work",
+    href: "/#projects",
+  },
+  {
+    title: "About",
+    href: "/#hello",
   },
 ]
 
