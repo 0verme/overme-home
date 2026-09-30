@@ -1,7 +1,7 @@
 {
   "short_name": "0verme",
-  "name": "0verme Home",
-  "description": "A customizable open-source starter with a component registry.",
+  "name": "0verme",
+  "description": "为数据工程构建实用工具，关注数据基础设施、数据产品与开源项目。",
   "icons": [
     {
       "src": "/icon.svg",

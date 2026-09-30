@@ -3,7 +3,6 @@ import {
   Panel,
   PanelHeader,
   PanelTitle,
-  PanelTitleSup,
 } from "@/features/portfolio/components/panel"
 import { PanelTitleCopy } from "@/features/portfolio/components/panel-title-copy"
 import { PROJECTS } from "@/features/portfolio/data/projects"
@@ -19,15 +18,14 @@ export function Projects() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Projects</a>
-          <PanelTitleSup>({PROJECTS.length})</PanelTitleSup>
+          <a href={`#${ID}`}>Selected Work</a>
           <PanelTitleCopy id={ID} />
         </PanelTitle>
       </PanelHeader>
 
       <CollapsibleList
         items={PROJECTS}
-        max={4}
+        max={PROJECTS.length}
         renderItem={(item) => <ProjectItem project={item} />}
       />
     </Panel>

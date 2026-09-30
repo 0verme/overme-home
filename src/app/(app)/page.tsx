@@ -11,11 +11,10 @@ import { TechStack } from "@/features/portfolio/components/tech-stack"
 import { PROJECTS } from "@/features/portfolio/data/projects"
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
-import { USER } from "@/features/portfolio/data/user"
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: USER.bio,
+  title: { absolute: "0verme — 数据产品与数据工程" },
+  description: "为数据工程构建实用工具，关注数据基础设施、数据产品与开源项目。",
   alternates: {
     canonical: "/",
   },

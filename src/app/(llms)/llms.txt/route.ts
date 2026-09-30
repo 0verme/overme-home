@@ -6,12 +6,13 @@ const allPosts = getBlogPosts()
 
 const content = `# ${SITE_INFO.name}
 
-> A customizable open-source starter with a reusable component registry and blocks.
+> A personal home for 0verme: data infrastructure, data products, open source, and practical engineering tools.
 
-- [About](${SITE_INFO.url}/about.md): Project scope and fork attribution.
-- [Components](${SITE_INFO.url}/components.md): Registry components and installation instructions.
-- [Blocks](${SITE_INFO.url}/blocks.md): Registry blocks grouped by category.
-- [Blog](${SITE_INFO.url}/blog.md): Project documentation and articles.
+- [About](${SITE_INFO.url}/about.md): profile and site scope.
+- [Notes](${SITE_INFO.url}/blog): the current blog route; Notes migration is deferred.
+- [Selected Work](${SITE_INFO.url}/#projects): a small selection of public projects.
+- [Components](${SITE_INFO.url}/components.md): retained component registry and development assets.
+- [Blocks](${SITE_INFO.url}/blocks.md): retained block registry and development assets.
 - [Source code](${SOURCE_CODE_GITHUB_URL}): GitHub repository.
 
 ## Components

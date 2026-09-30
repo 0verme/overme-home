@@ -109,7 +109,7 @@ function getPageJsonLd(doc: Doc): WithContext<PageSchema> {
     url: absoluteUrl(postUrl),
     datePublished: new Date(doc.metadata.createdAt).toISOString(),
     dateModified: new Date(doc.metadata.updatedAt).toISOString(),
-    author: { "@id": JSON_LD_ID.organization },
+    author: { "@id": JSON_LD_ID.person },
     mainEntityOfPage: absoluteUrl(postUrl),
     isPartOf: {
       "@type": "Blog",

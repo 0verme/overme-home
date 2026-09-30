@@ -1,12 +1,12 @@
 # 0verme Home
 
-A customizable open-source starter with a reusable component registry, blocks, and documentation shell.
+Personal home and Selected Work for 0verme, with a curated profile, project notes, and a reusable component registry retained as a development asset.
 
 > **Fork attribution:** This repository is a fork of [ncdai/chanhdai.com](https://github.com/ncdai/chanhdai.com). The upstream MIT license, copyright notice, and trademark policy are retained.
 
 ## About this fork
 
-Phase 0 replaces the public profile with neutral placeholders while keeping reusable UI, registry, documentation, and build infrastructure. It does not deploy the site, migrate content, or change the existing production domain.
+The homepage presents 0verme's data engineering focus, public profiles, and selected projects. Reusable UI, registry, documentation, and build infrastructure remain available as development assets. This repository does not deploy the site, migrate Notes, or change production.
 
 ## Preserved capabilities
 
@@ -16,7 +16,7 @@ Phase 0 replaces the public profile with neutral placeholders while keeping reus
 - PWA manifest, SEO metadata, and JSON-LD structured data
 - Command menu, responsive navigation, and shared UI primitives
 
-Portfolio, social, bookmark, craft, sponsor, and recognition data starts empty. Add only information and media you intend to publish.
+Portfolio and social data is intentionally limited to confirmed public information. No private contact details, employer history, or unverified project metrics are published.
 
 ## Getting started
 
@@ -47,11 +47,11 @@ pnpm build
 
 - `src/registry/` — reusable components, hooks, blocks, examples, and styles
 - `src/features/doc/content/` — MDX blog and component documentation
-- `src/features/portfolio/data/` — optional profile data, initially cleared
+- `src/features/portfolio/data/` — public profile, selected work, and curated stack
 - `src/config/` — site, registry, and structured-data configuration
 - `docs/PHASE0_AUDIT.md` — retained scope and baseline verification notes
 
-The registry namespace and URL are configured in `src/config/registry.ts` and environment variables. The upstream production registry URL remains unchanged until a separately approved domain migration.
+The registry namespace and URL are configured in `src/config/registry.ts` and environment variables. The production registry domain remains unchanged until a separately approved registry migration.
 
 ## License and attribution
 

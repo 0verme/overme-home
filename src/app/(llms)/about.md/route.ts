@@ -1,19 +1,19 @@
-import { SOURCE_CODE_GITHUB_URL } from "@/config/site"
+import { SITE_INFO } from "@/config/site"
+import { SOCIAL } from "@/features/portfolio/data/social-links"
 
-const content = `# 0verme Home
+const content = `# 0verme
 
-A customizable open-source starter that preserves a reusable component registry, blocks, and documentation shell.
+${SITE_INFO.description}
 
-## Explore
+0verme builds practical tools for data engineering and is interested in data infrastructure, data products, open source, and AI in data systems. This site collects a short profile and selected work. Its component and block registry remains available as a development asset.
 
-- [Components](/components)
-- [Blocks](/blocks)
-- [Blog](/blog)
-- [Source code](${SOURCE_CODE_GITHUB_URL})
+## Home sections
 
-## Fork attribution
-
-This repository is a fork of [ncdai/chanhdai.com](https://github.com/ncdai/chanhdai.com). The original MIT license and copyright notice are retained.
+- [Notes](/blog): the existing blog route; Notes migration is deferred.
+- [Selected Work](/#projects)
+- [About](/#hello)
+- [GitHub](${SOCIAL.github.href})
+- [X](${SOCIAL.x.href})
 `
 
 export const revalidate = false
