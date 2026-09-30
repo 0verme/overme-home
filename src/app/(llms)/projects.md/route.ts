@@ -1,11 +1,10 @@
 import { PROJECTS } from "@/features/portfolio/data/projects"
 
-const content = `# Projects
+const content = `# Selected Work
 
 ${PROJECTS.map((item) => {
-  const skills = `\n\nSkills: ${item.skills.join(", ")}`
-  const description = item.description ? `\n\n${item.description.trim()}` : ""
-  return `## ${item.title}\n\nProject URL: ${item.link}${skills}${description}`
+  const skills = `\n\nCore tags: ${item.skills.join(", ")}`
+  return `## ${item.title}\n\n${item.description}\n\nCategory: ${item.category}\n\nStatus: ${item.status}\n\nProject URL: ${item.link}${skills}`
 }).join("\n\n")}
 `
 

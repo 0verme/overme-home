@@ -12,7 +12,7 @@ export function TechStack() {
     <Panel id={ID}>
       <PanelHeader>
         <PanelTitle>
-          <a href={`#${ID}`}>Stack</a>
+          <a href={`#${ID}`}>Tech Stack</a>
           <PanelTitleCopy id={ID} />
         </PanelTitle>
       </PanelHeader>

@@ -6,12 +6,8 @@ import { GoogleTagManager } from "@next/third-parties/google"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
 import type { WebSite, WithContext } from "schema-dts"
 
-import { JSON_LD_ID, organizationJsonLd } from "@/config/json-ld"
-import {
-  META_THEME_COLORS,
-  SITE_INFO,
-  SOURCE_CODE_GITHUB_URL,
-} from "@/config/site"
+import { JSON_LD_ID, personJsonLd } from "@/config/json-ld"
+import { META_THEME_COLORS, SITE_INFO, X_HANDLE } from "@/config/site"
 import { fontVariables } from "@/lib/fonts"
 import { JsonLdScript } from "@/lib/json-ld"
 import { Providers } from "@/components/providers"
@@ -23,7 +19,7 @@ function getWebSiteJsonLd(): WithContext<WebSite> {
     "@id": JSON_LD_ID.website,
     name: SITE_INFO.name,
     url: SITE_INFO.url,
-    publisher: organizationJsonLd,
+    publisher: personJsonLd,
   }
 }
 
@@ -45,18 +41,18 @@ const darkModeScript = String.raw`
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_INFO.url),
   title: {
-    template: `%s – ${SITE_INFO.name}`,
-    default: SITE_INFO.name,
+    template: `%s | ${SITE_INFO.name}`,
+    default: "0verme — 数据产品与数据工程",
   },
   description: SITE_INFO.description,
   keywords: SITE_INFO.keywords,
-  authors: [{ name: SITE_INFO.name, url: SOURCE_CODE_GITHUB_URL }],
+  authors: [{ name: SITE_INFO.name, url: "https://github.com/0verme" }],
   creator: SITE_INFO.name,
   openGraph: {
     siteName: SITE_INFO.name,
     url: "/",
     type: "website",
-    locale: "en_US",
+    locale: "zh_CN",
     images: [
       {
         url: SITE_INFO.ogImage,
@@ -68,6 +64,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     images: [SITE_INFO.ogImage],
   },
   icons: {
@@ -89,7 +87,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={fontVariables} suppressHydrationWarning>
+    <html lang="zh-CN" className={fontVariables} suppressHydrationWarning>
       <head>
         <script
           type="text/javascript"

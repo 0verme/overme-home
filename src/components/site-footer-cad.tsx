@@ -1,41 +1,12 @@
 import Link from "next/link"
 
-import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site"
-import type { BuildInfo } from "@/lib/build-info"
-import { getBuildInfo, getStack } from "@/lib/build-info"
+import { MAIN_NAV, SITE_INFO } from "@/config/site"
 import { cn } from "@/lib/utils"
-import { GitHubIcon } from "@/components/icons"
 import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand"
+import { SOCIAL } from "@/features/portfolio/data/social-links"
 
-// Imported here rather than through `@/config/site`, which client components
-// pull in, to keep the manifest out of client bundles.
-import packageJson from "../../package.json"
-// Precomputed by `pnpm registry:build`, so the count costs no registry import.
-import registryStats from "../../registry-stats.json"
-
-const INSPIRED_BY = [
-  "Tailwind CSS",
-  "shadcn/ui",
-  "Vercel",
-  "Evil Charts",
-  "Devouring Details",
-  "Skiper UI",
-  "Making Software",
-  "shadcncraft",
-]
-
-const OPENPANEL_URL =
-  "https://openpanel.dev?utm_source=overme-home&utm_medium=referral&utm_campaign=footer"
-
-const SITE_TITLE = "0verme Home"
-
-const SITE_SUBTITLE = packageJson.description
-
-/** Footer laid out as the title block of a technical drawing. */
+/** Footer keeps the site's line-grid language while pointing to personal work. */
 export function SiteFooterCad() {
-  const build = getBuildInfo()
-  const stack = getStack()
-
   return (
     <footer className="max-w-screen overflow-x-clip px-2">
       <div className="mx-auto border-x group-has-data-[slot=layout-wide]/layout:container md:max-w-3xl">
@@ -45,141 +16,46 @@ export function SiteFooterCad() {
 
         <div className="relative">
           <div className="screen-line-bottom flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-4 py-3 font-mono text-sm">
-            <span className="font-medium">{SITE_TITLE}</span>
+            <span className="font-medium">0verme</span>
             <span className="font-sans text-muted-foreground">
-              {SITE_SUBTITLE}
+              {SITE_INFO.description}
             </span>
           </div>
 
-          <dl className="grid grid-cols-2 gap-px bg-line font-mono md:grid-cols-4">
-            <Field label="Build">
-              <BuildValue build={build} />
-            </Field>
+          <dl className="grid grid-cols-2 gap-px bg-line font-mono sm:grid-cols-3">
+            {MAIN_NAV.map(({ href, title }) => (
+              <Field key={title} label={title}>
+                <Link className="link-underline" href={href}>
+                  {title}
+                </Link>
+              </Field>
+            ))}
 
-            <Field label="Date">
-              <time dateTime={build.date}>{build.date}</time>
-            </Field>
+            {[SOCIAL.github, SOCIAL.x].map((profile) => (
+              <Field key={profile.title} label={profile.title}>
+                <a
+                  className="link-underline"
+                  href={profile.href}
+                  target="_blank"
+                  rel="me noopener noreferrer"
+                >
+                  {profile.handle}
+                </a>
+              </Field>
+            ))}
 
-            <Field label="Registry">{registryStats.total} items</Field>
-
-            <Field label="Status">Ready to customize</Field>
-
-            <Field label="Source code">
-              <a
-                className="link-underline"
-                href={SOURCE_CODE_GITHUB_URL}
-                target="_blank"
-                rel="noopener"
-              >
-                GitHub
+            <Field label="Email">
+              <a className="link-underline" href="mailto:hello@overme.cn">
+                hello@overme.cn
               </a>
-            </Field>
-
-            <Field label="License">
-              <a
-                className="link-underline"
-                href={LICENSE.url}
-                target="_blank"
-                rel="noopener"
-              >
-                {LICENSE.name}
-              </a>
-            </Field>
-
-            <Field className="md:col-span-2" label="Typeface">
-              Geist
-            </Field>
-
-            <Field className="col-span-2" label="Stack">
-              <ul className="flex flex-col gap-0.5">
-                {stack.map((entry) => (
-                  <li key={entry}>{entry}</li>
-                ))}
-              </ul>
-            </Field>
-
-            <Field label="Analytics">
-              <a
-                className="link-underline"
-                href={OPENPANEL_URL}
-                target="_blank"
-                rel="noopener"
-              >
-                OpenPanel
-              </a>
-            </Field>
-
-            <Field label="For agents">
-              <ul className="flex flex-col gap-0.5">
-                <li>
-                  <a
-                    className="link-underline"
-                    href="/llms.txt"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    llms.txt
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="link-underline"
-                    href="/index.md"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    index.md
-                  </a>
-                </li>
-              </ul>
-            </Field>
-
-            <Field className="col-span-2 md:col-span-4" label="Inspired by">
-              {/*
-                Cancelling the cell padding and repeating the parent's column
-                count and gap lands these columns on the same grid lines as the
-                cells above, rather than dividing the padded width.
-              */}
-              <ol className="-mx-4 grid grid-cols-2 gap-x-px gap-y-0.5 font-sans md:grid-cols-4">
-                {INSPIRED_BY.map((name, index) => (
-                  <li className="flex gap-2 px-4" key={name}>
-                    {/* Hidden: the list element already conveys the position. */}
-                    <span
-                      className="font-mono text-muted-foreground/80"
-                      aria-hidden
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    {name}
-                  </li>
-                ))}
-              </ol>
             </Field>
           </dl>
         </div>
 
         <div className="screen-line-top h-4" />
 
-        <div className="screen-line-top screen-line-bottom flex items-center gap-3 screen-line-bottom-border px-4 py-3 text-muted-foreground">
-          <Link
-            href="/"
-            className="mr-auto text-muted-foreground transition-[color] hover:text-foreground"
-            aria-label="Home"
-          >
-            <span className="font-heading text-sm font-semibold tracking-tight">
-              0verme
-            </span>
-          </Link>
-
-          <a
-            className="flex items-center transition-[color] hover:text-foreground"
-            href={SOURCE_CODE_GITHUB_URL}
-            target="_blank"
-            rel="noopener"
-            aria-label="0verme Home source code on GitHub"
-          >
-            <GitHubIcon className="size-4" />
-          </a>
+        <div className="screen-line-top screen-line-bottom flex items-center px-4 py-3 text-sm text-muted-foreground">
+          Personal home of 0verme
         </div>
       </div>
 
@@ -188,36 +64,6 @@ export function SiteFooterCad() {
       <div className="h-(--fade-bottom-height)" />
       <div className="pb-[env(safe-area-inset-bottom,0)]" />
     </footer>
-  )
-}
-
-function BuildValue({ build }: { build: BuildInfo }) {
-  if (!build.commitShortSha) {
-    return <span className="text-muted-foreground">unavailable</span>
-  }
-
-  return (
-    <>
-      {build.commitUrl ? (
-        <a
-          className="link-underline"
-          href={build.commitUrl}
-          target="_blank"
-          rel="noopener"
-        >
-          {build.commitShortSha}
-        </a>
-      ) : (
-        build.commitShortSha
-      )}
-
-      {build.environment !== "production" && (
-        <span className="text-muted-foreground">
-          {" "}
-          ({build.environment === "development" ? "local" : build.environment})
-        </span>
-      )}
-    </>
   )
 }
 

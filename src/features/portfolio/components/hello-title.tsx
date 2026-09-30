@@ -6,7 +6,7 @@ import { InlineScript } from "@/components/inline-script"
 import { PanelTitle } from "@/features/portfolio/components/panel"
 
 const ID = "hello"
-const SSR_TEXT = "Hello"
+const SSR_TEXT = "你好"
 
 export function HelloTitle() {
   // Server renders "Hello"; the client snapshot resolves the viewer's local
@@ -38,9 +38,9 @@ export function HelloTitle() {
 // the pre-hydration script as well as used as the client snapshot.
 function getGreeting() {
   const hour = new Date().getHours()
-  if (hour >= 0 && hour < 12) return "Good morning"
-  if (hour >= 12 && hour < 17) return "Good afternoon"
-  return "Good evening"
+  if (hour >= 0 && hour < 12) return "早上好"
+  if (hour >= 12 && hour < 17) return "下午好"
+  return "晚上好"
 }
 
 function runGreetingScript(elementId: string, compute: typeof getGreeting) {

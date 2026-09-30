@@ -3,7 +3,6 @@ import { DatabaseIcon, MapPinIcon } from "lucide-react"
 import { USER } from "@/features/portfolio/data/user"
 
 import { Panel, PanelContent } from "../panel"
-import { CurrentLocalTimeItem } from "./current-local-time-item"
 import { EmailItem } from "./email-item"
 import {
   IntroItem,
@@ -56,8 +55,6 @@ export function Overview() {
             </IntroItemContent>
           </IntroItem>
         )}
-
-        <CurrentLocalTimeItem timeZone={USER.timeZone} />
 
         {USER.emailB64 && <EmailItem emailB64={USER.emailB64} />}
 

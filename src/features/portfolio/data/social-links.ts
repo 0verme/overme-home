@@ -1,11 +1,12 @@
 import type { SocialProfile } from "@/features/portfolio/types/social-links"
 
-/**
- * Profiles are left blank until the site owner configures them. GitHub points
- * to the repository owner; remove any links that should not be published.
- */
 export const SOCIAL = {
-  x: { title: "X", handle: "", href: "", sameAs: false },
+  x: {
+    title: "X",
+    handle: "@0verme8",
+    href: "https://x.com/0verme8",
+    sameAs: true,
+  },
   github: {
     title: "GitHub",
     handle: "0verme",
