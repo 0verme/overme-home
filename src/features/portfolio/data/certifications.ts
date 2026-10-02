@@ -1,4 +1,4 @@
 import type { Certification } from "../types/certifications"
 
-/** Replace this starter list with your own certifications. */
+/** Add verified certifications here if they belong on the public profile. */
 export const CERTIFICATIONS: Certification[] = []

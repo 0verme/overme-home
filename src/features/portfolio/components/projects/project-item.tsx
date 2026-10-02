@@ -30,9 +30,11 @@ export function ProjectItem({
   return (
     <Collapsible className={className}>
       <div className="relative flex items-start hover:bg-accent-muted">
-        <IconTile className="mx-4 mt-4">{project.icon ?? <BoxIcon />}</IconTile>
+        <IconTile className="mx-3 mt-3 sm:mx-4 sm:mt-4">
+          {project.icon ?? <BoxIcon />}
+        </IconTile>
 
-        <div className="flex min-w-0 flex-1 items-start gap-2 border-l border-dashed border-line p-4">
+        <div className="flex min-w-0 flex-1 items-start gap-2 border-l border-dashed border-line p-3 sm:p-4">
           <div className="min-w-0 flex-1">
             <h3 className="leading-snug font-medium text-balance">
               <CollapsibleTrigger className="text-left">
@@ -41,7 +43,7 @@ export function ProjectItem({
               </CollapsibleTrigger>
             </h3>
 
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-1.5 text-sm/relaxed text-muted-foreground">
               {project.description}
             </p>
 

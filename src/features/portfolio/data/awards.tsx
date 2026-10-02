@@ -1,4 +1,4 @@
 import type { Award } from "../types/awards"
 
-/** Replace this starter list with your own awards. */
+/** Add verified award details here when they are relevant to the public profile. */
 export const AWARDS: Award[] = []

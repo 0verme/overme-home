@@ -26,4 +26,4 @@
 
 ## Hidden / Deferred
 
-不显示职位经历、电话、精确地址、坐标或未经核验的规模数据；隐藏没有明显价值的本地时间模块。保留 neutral avatar 与 isometric placeholder。Notes / 英文 Notes、RSS、redirect、产品站和生产部署均留待后续阶段；本轮不迁移文章。
+不显示职位经历、电话、精确地址、坐标或未经核验的规模数据；隐藏没有明显价值的本地时间模块。漫画头像继续使用本地 neutral 占位；首页 Hero 改为 0V 等距线稿 Monogram。Notes / 英文 Notes、RSS、redirect、产品站和生产部署均留待后续阶段；本轮不迁移文章。

@@ -53,10 +53,6 @@ export function SiteFooterCad() {
         </div>
 
         <div className="screen-line-top h-4" />
-
-        <div className="screen-line-top screen-line-bottom flex items-center px-4 py-3 text-sm text-muted-foreground">
-          Personal home of 0verme
-        </div>
       </div>
 
       <SiteFooterInteractiveLogotype />
