@@ -1,6 +1,6 @@
 # AI agent guidelines for 0verme Home
 
-Next.js 16 (App Router) starter, documentation, and shadcn registry website.
+Next.js 16 (App Router) personal homepage with documentation routes and a retained shadcn component registry.
 
 **Stack**: TypeScript, React 19, Tailwind CSS v4, shadcn/ui, MDX, Vitest, pnpm (Bun for scripts), Vercel
 

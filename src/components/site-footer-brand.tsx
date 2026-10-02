@@ -1,9 +1,9 @@
 export function SiteFooterInteractiveLogotype() {
   return (
     <div className="screen-line-bottom after:z-1 after:bg-foreground/15">
-      <div className="overflow-hidden py-4">
+      <div className="overflow-hidden py-3">
         <p
-          className="text-center font-heading text-[clamp(4rem,24vw,15rem)] leading-none font-semibold -tracking-widest text-foreground/80"
+          className="text-center font-heading text-[clamp(3.5rem,14vw,9rem)] leading-none font-semibold -tracking-widest text-foreground/60"
           aria-label="0verme"
         >
           0verme
