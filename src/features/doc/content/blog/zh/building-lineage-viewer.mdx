@@ -1,0 +1,65 @@
+---
+title: "把数据血缘查看器做成一个 Web Component"
+description: "从 lineage-viewer 的实现出发，聊聊零运行时依赖、确定性布局和可嵌入组件之间的取舍。"
+createdAt: "2026-08-12T12:00:00+08:00"
+updatedAt: "2026-08-12T12:00:00+08:00"
+locale: "zh"
+translationKey: "building-lineage-viewer"
+tags: ["数据工程", "TypeScript", "Web Components"]
+author: "jearhe"
+pinned: true
+ads: false
+---
+
+做数据平台时，血缘图经常不是一个独立产品，而是要嵌进数据目录、任务平台、审计页面或内部管理台。宿主可能使用 React，也可能是 Vue、原生页面，甚至只是一个 iframe。
+
+这也是我把 [lineage-viewer](https://github.com/0verme/lineage-viewer) 做成 Web Component 的主要原因：与其先选择一个前端框架，不如把浏览器本身当作稳定的集成边界。
+
+## 一个尽量小的组件边界
+
+lineage-viewer 使用 TypeScript、原生 Web Component、Shadow DOM 和 SVG，当前保持零运行时依赖。宿主只需要传入节点和边组成的 JSON，就能得到一张可缩放、平移、聚焦和高亮的数据血缘图。
+
+```ts
+viewer.data = {
+  nodes: [
+    { id: "ods_orders", label: "ODS 订单表" },
+    { id: "dwd_orders", label: "DWD 订单明细" },
+  ],
+  edges: [
+    {
+      source: "ods_orders",
+      target: "dwd_orders",
+      label: "清洗转换",
+    },
+  ],
+};
+```
+
+组件提供原生 JavaScript、React 和 Vue 的最小集成示例，但核心本身不依赖任何一种框架。这样可以减少宿主的依赖冲突，也让组件更适合嵌入已有系统。
+
+## 确定性比“看起来聪明”更重要
+
+血缘图不只是展示。用户会记住某张表位于哪一层、某条边从哪个方向进入。如果同一份数据每次刷新都得到不同布局，阅读成本会不断累积。
+
+因此布局算法强调确定性：先进行强连通分量收缩，再做最长路径分层、稳定的层内排序、基础交叉减少和断开块打包。它不追求解决所有图布局问题，而是希望相同输入尽可能得到相同结果。
+
+目前支持 `LR`、`RL`、`TB`、`BT` 四种方向，也支持表级、字段级和混合血缘。字段仍然是表节点内部的行，而不是被拆成独立图节点，这样在数据量增大时仍能保留表这一业务上下文。
+
+## 严格模式与宽松模式
+
+真实平台输出的数据并不总是干净的：可能有重复节点、缺失端点、自环或循环。
+
+lineage-viewer 提供两种处理方式：
+
+- `lenient` 尽量保留可恢复的数据，同时给出诊断信息；
+- `strict` 在存在错误时拒绝生成图。
+
+这两个模式对应不同场景。面向最终用户的浏览页面更需要尽可能展示，数据契约测试和开发调试则更适合尽早失败。
+
+## 主动划清边界
+
+这个项目是查看器，不负责 SQL 解析、自动发现血缘、扫描数据库、存储元数据或管理权限，也不试图替代 DataHub、Apache Atlas 这样的完整平台。
+
+把边界划小，意味着组件可以专注做好三件事：规范化输入、稳定布局和可靠交互。剩下的能力交给宿主系统，是当前更容易维护的选择。
+
+项目仍处于 Alpha 阶段，API 未来仍可能调整。可以在 [在线演示](https://lineage.overme.cn/) 中查看不同场景，或使用 JSON Playground 直接试验自己的节点和边数据。

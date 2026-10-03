@@ -24,19 +24,17 @@
     "",
     "^[./]"
   ],
-  "importOrderParserPlugins": [
-    "typescript",
-    "jsx",
-    "decorators-legacy"
-  ],
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
   "plugins": [
     "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss"
   ],
-  "tailwindFunctions": [
-    "clsx",
-    "cn",
-    "cva"
-  ],
-  "tailwindStylesheet": "./src/styles/globals.css"
+  "tailwindFunctions": ["clsx", "cn", "cva"],
+  "tailwindStylesheet": "./src/styles/globals.css",
+  "overrides": [
+    {
+      "files": "src/features/doc/content/blog/**/*.mdx",
+      "options": { "embeddedLanguageFormatting": "off" }
+    }
+  ]
 }

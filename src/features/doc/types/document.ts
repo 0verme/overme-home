@@ -1,6 +1,15 @@
+import type { Locale } from "@/lib/i18n"
+
 export type DocMetadata = {
   title: string
   description: string
+  locale?: Locale
+  translationKey?: string
+  tags?: string[]
+  author?: string
+  sourcePath?: string
+  translatedAt?: string
+  translationOf?: string
   /**
    * Social/OG image URL for the post.
    * Use an absolute URL or a path under /public. Recommended size: 1200x630.
@@ -52,4 +61,5 @@ export type DocPreview = {
   slug: string
   title: string
   category?: string
+  href?: string
 }

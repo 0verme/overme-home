@@ -5,10 +5,21 @@ import { SOCIAL } from "@/features/portfolio/data/social-links"
 
 export const SITE_INFO = {
   name: "0verme",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://0verme.example",
-  ogImage: "/og/simple?title=0verme&description=Open-source%20starter",
-  description: "A customizable open-source starter with a component registry.",
-  keywords: ["0verme", "open source", "UI components", "shadcn registry"],
+  url: (process.env.NEXT_PUBLIC_APP_URL || "https://overme.cn").replace(
+    /\/$/,
+    ""
+  ),
+  ogImage:
+    "/og/simple?title=0verme&description=Data%20engineering%20%C2%B7%20AI%20tools",
+  description:
+    "0verme · 见远而行。数据工程、AI 工具与独立开发的作品和实践札记。",
+  keywords: [
+    "0verme",
+    "见远而行",
+    "data engineering",
+    "AI tools",
+    "open source",
+  ],
 }
 
 export const LICENSE = {

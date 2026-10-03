@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation"
 
-import { getAllDocs } from "@/features/doc/data/documents"
+import {
+  getComponentDoc,
+  getComponentDocs,
+} from "@/features/doc/data/documents"
 import { getLLMText } from "@/features/doc/lib/get-llm-text"
 
 export const revalidate = false
@@ -8,7 +11,7 @@ export const dynamic = "force-static"
 export const dynamicParams = false
 
 export async function generateStaticParams() {
-  const docs = getAllDocs()
+  const docs = getComponentDocs()
 
   return docs.map((doc) => ({
     slug: doc.slug,
@@ -21,8 +24,7 @@ export async function GET(
 ) {
   const { slug } = await params
 
-  const allDocs = getAllDocs()
-  const post = allDocs.find((doc) => doc.slug === slug)
+  const post = getComponentDoc(slug)
 
   if (!post) {
     notFound()

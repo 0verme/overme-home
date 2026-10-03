@@ -1,0 +1,56 @@
+---
+title: "Why I Write ‘见远而行’"
+description: "The meaning behind this site, its three long-term themes, and the standards I use to document constraints, trade-offs, and verifiable results."
+createdAt: "2026-08-11T08:00:00+08:00"
+updatedAt: "2026-08-13T09:30:00+08:00"
+locale: "en"
+translationKey: "hello-world"
+sourceHash: "a6e47c05bf46dbe5b8fb48ac2ef4c6c3c95af2c77fb1cecf491a04fdedcbab18"
+tags: ["Notes", "Writing"]
+author: "jearhe"
+pinned: true
+ads: false
+---
+
+“见远而行” is not a slogan about predicting the future.
+
+To me, _见远_ means looking past the feature in front of me to its data boundaries, failure modes, and long-term maintenance cost. _而行_ means not stopping at an opinion, but turning that judgment into something that can run, be inspected, and keep improving.
+
+This site records the work between those two ideas: how a problem becomes visible, how constraints shape a decision, and how that decision eventually becomes code, a product, or a conclusion that remains open to verification.
+
+## Three long-term themes
+
+### Data infrastructure
+
+I write about data lineage, governance, semantic modeling, and observability. I am more interested in how systems exchange trustworthy data, how contracts are expressed, and whether failures can be traced than in cataloguing tools and terminology.
+
+### Trustworthy AI applications
+
+Language models are good at interpreting natural language and ambiguous input. Systems that handle permissions, money, state changes, or data ownership still need deterministic boundaries. I document ways to separate AI from business logic, observe usage and cost, and balance speed with privacy and control.
+
+### Small, maintainable products
+
+I also write about concrete engineering choices in independent projects: why a Web Component can be the right boundary, why a service lives in the user's own account, how runtime dependencies can be reduced, and which capabilities a tool should deliberately leave out. The goal is not to make a project sound large. It is to keep it understandable, deployable, and able to improve over time.
+
+## What I expect from an article
+
+Each post should begin with a real problem or a project being built. I try to follow a few plain standards:
+
+- establish the context and constraints before presenting a solution;
+- explain why a choice was made and what was deliberately not chosen;
+- distinguish facts, estimates, personal judgment, and the project's current state;
+- provide code, diagrams, demos, data, or a public repository whenever possible;
+- update the article when the project changes or the original judgment no longer holds.
+
+These standards do not guarantee that every design is correct. They create a starting point that other people—and my future self—can inspect and improve.
+
+## Where to start
+
+If this is your first visit, these posts are useful entry points:
+
+- [Building a Data Lineage Viewer as a Web Component](/en/blog/building-lineage-viewer), on deterministic layout, cross-framework integration, and component boundaries;
+- [In a Ledger, AI Should Interpret Rather Than Decide](/en/blog/ai-only-interprets-ledger-actions), on candidate actions, confirmation, and deterministic ledger logic.
+
+The [AI Footprint](https://token.overme.cn/) publishes aggregate usage and cost trends. The [About page](/en#hello) collects my current areas of focus and links to the rest of my work.
+
+I do not plan to fill this site on a fixed schedule. A new post appears when a problem has gone through enough implementation, verification, or reflection to be worth explaining clearly.

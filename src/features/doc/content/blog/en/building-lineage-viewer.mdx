@@ -1,0 +1,65 @@
+---
+title: "Building a Data Lineage Viewer as a Web Component"
+description: "Design trade-offs behind lineage-viewer: zero runtime dependencies, deterministic layout, and an embeddable component boundary."
+createdAt: "2026-08-12T12:00:00+08:00"
+updatedAt: "2026-08-12T12:00:00+08:00"
+locale: "en"
+translationKey: "building-lineage-viewer"
+tags: ["Data Engineering", "TypeScript", "Web Components"]
+author: "jearhe"
+pinned: true
+ads: false
+---
+
+In a data platform, a lineage graph is rarely a standalone product. It usually needs to live inside a catalog, job platform, audit page, or internal admin tool. The host may use React, Vue, plain HTML, or even an iframe.
+
+That is why I built [lineage-viewer](https://github.com/0verme/lineage-viewer) as a Web Component. Instead of choosing a framework as the integration boundary, it uses the browser platform itself.
+
+## A deliberately small component boundary
+
+lineage-viewer uses TypeScript, native Web Components, Shadow DOM, and SVG with zero runtime dependencies. A host passes in JSON nodes and edges and receives an interactive graph with zooming, panning, focusing, and path highlighting.
+
+```ts
+viewer.data = {
+  nodes: [
+    { id: "ods_orders", label: "ODS Orders" },
+    { id: "dwd_orders", label: "DWD Order Details" },
+  ],
+  edges: [
+    {
+      source: "ods_orders",
+      target: "dwd_orders",
+      label: "Clean and transform",
+    },
+  ],
+};
+```
+
+The repository includes minimal integrations for JavaScript, React, and Vue, while the core remains independent of all three. This reduces dependency conflicts and makes the component easier to embed in existing systems.
+
+## Determinism matters more than looking clever
+
+A lineage graph is more than a picture. People remember where a table sits and from which direction an edge enters. If the same data produces a different layout after every refresh, that spatial memory disappears.
+
+The layout therefore favors determinism: strongly connected component contraction, longest-path layering, stable in-layer ordering, basic crossing reduction, and disconnected block packing. It does not attempt to solve every graph-layout problem. Its goal is to make identical input produce an identical result whenever possible.
+
+The viewer supports `LR`, `RL`, `TB`, and `BT` directions, along with table-level, column-level, and mixed lineage. Fields remain rows inside a table node rather than separate graph nodes, preserving table context as the graph grows.
+
+## Strict and lenient validation
+
+Real platform data is not always clean. It may include duplicate nodes, missing endpoints, self-loops, or cycles.
+
+lineage-viewer offers two policies:
+
+- `lenient` preserves recoverable data and reports diagnostics;
+- `strict` refuses to render when errors are present.
+
+End-user pages often benefit from showing as much as possible. Contract tests and development tools usually benefit from failing early.
+
+## Drawing a clear boundary
+
+This project is a viewer. It does not parse SQL, discover lineage, scan databases, store metadata, manage permissions, or replace platforms such as DataHub or Apache Atlas.
+
+Keeping the boundary small lets it focus on three things: normalizing input, producing stable layouts, and providing reliable interaction. The host system owns everything else.
+
+The project is still in Alpha and its API may change. Explore the scenarios in the [live demo](https://lineage.overme.cn/) or use the JSON Playground with your own nodes and edges.

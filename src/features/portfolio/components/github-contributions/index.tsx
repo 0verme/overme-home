@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 
+import type { Locale } from "@/lib/i18n"
 import type { Activity } from "@/registry/components/contribution-graph"
 import { getGitHubContributions } from "@/features/portfolio/data/github-contributions"
 
@@ -8,20 +9,25 @@ import { GitHubContributionFallback, GitHubContributionGraph } from "./graph"
 
 const PANEL_CLASS = "screen-line-top-border"
 
-export function GitHubContributions() {
+export function GitHubContributions({ locale = "zh" }: { locale?: Locale }) {
   const contributions = getGitHubContributions()
 
   return (
-    <Suspense fallback={<ContributionFallbackPanel />}>
-      <ResolvedGitHubContributions contributions={contributions} />
+    <Suspense fallback={<ContributionFallbackPanel locale={locale} />}>
+      <ResolvedGitHubContributions
+        contributions={contributions}
+        locale={locale}
+      />
     </Suspense>
   )
 }
 
 async function ResolvedGitHubContributions({
   contributions,
+  locale,
 }: {
   contributions: Promise<Activity[]>
+  locale: Locale
 }) {
   let data: Activity[]
 
@@ -35,17 +41,21 @@ async function ResolvedGitHubContributions({
 
   return (
     <Panel className={PANEL_CLASS}>
-      <h2 className="sr-only">GitHub contributions</h2>
-      <GitHubContributionGraph contributions={data} />
+      <h2 className="sr-only">
+        {locale === "zh" ? "GitHub 贡献记录" : "GitHub contributions"}
+      </h2>
+      <GitHubContributionGraph contributions={data} locale={locale} />
     </Panel>
   )
 }
 
-function ContributionFallbackPanel() {
+function ContributionFallbackPanel({ locale }: { locale: Locale }) {
   return (
     <Panel className={PANEL_CLASS}>
-      <h2 className="sr-only">GitHub contributions</h2>
-      <GitHubContributionFallback />
+      <h2 className="sr-only">
+        {locale === "zh" ? "GitHub 贡献记录" : "GitHub contributions"}
+      </h2>
+      <GitHubContributionFallback locale={locale} />
     </Panel>
   )
 }

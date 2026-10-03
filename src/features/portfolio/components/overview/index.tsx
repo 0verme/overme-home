@@ -1,6 +1,7 @@
 import { DatabaseIcon, MapPinIcon } from "lucide-react"
 
-import { USER } from "@/features/portfolio/data/user"
+import type { Locale } from "@/lib/i18n"
+import { getUser } from "@/features/portfolio/data/user"
 
 import { Panel, PanelContent } from "../panel"
 import { CurrentLocalTimeItem } from "./current-local-time-item"
@@ -14,10 +15,11 @@ import {
 import { JobItem } from "./job-item"
 import { PhoneItem } from "./phone-item"
 
-export function Overview() {
+export function Overview({ locale = "zh" }: { locale?: Locale }) {
+  const USER = getUser(locale)
   return (
     <Panel className="screen-line-bottom-none screen-line-top-none">
-      <h2 className="sr-only">Overview</h2>
+      <h2 className="sr-only">{locale === "zh" ? "简介与联系" : "Overview"}</h2>
 
       <PanelContent className="grid gap-x-4 gap-y-2.5 sm:grid-cols-2">
         {USER.bio && (
@@ -49,7 +51,7 @@ export function Overview() {
             <IntroItemContent>
               <IntroItemLink
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(USER.address)}`}
-                aria-label={`Location: ${USER.address}`}
+                aria-label={`${locale === "zh" ? "所在地" : "Location"}: ${USER.address}`}
               >
                 {USER.address}
               </IntroItemLink>
@@ -57,9 +59,11 @@ export function Overview() {
           </IntroItem>
         )}
 
-        <CurrentLocalTimeItem timeZone={USER.timeZone} />
+        <CurrentLocalTimeItem timeZone={USER.timeZone} locale={locale} />
 
-        {USER.emailB64 && <EmailItem emailB64={USER.emailB64} />}
+        {USER.emailB64 && (
+          <EmailItem emailB64={USER.emailB64} locale={locale} />
+        )}
 
         {USER.phoneNumberB64 && (
           <PhoneItem phoneNumberB64={USER.phoneNumberB64} />

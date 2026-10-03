@@ -2,11 +2,15 @@
 
 import { useEffect, useId, useState } from "react"
 
+import type { Locale } from "@/lib/i18n"
 import { InlineScript } from "@/components/inline-script"
 
 import { IntroItem, IntroItemContent, IntroItemIcon } from "./intro-item"
 
-export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
+export function CurrentLocalTimeItem({
+  timeZone,
+  locale = "zh",
+}: CurrentLocalTimeItemProps) {
   const uid = useId()
   const ids = {
     time: `lt-time-${uid}`,
@@ -23,7 +27,7 @@ export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
 
   useEffect(() => {
     const updateTime = () => {
-      const { time, hour, minute, diff } = computeClock(timeZone)
+      const { time, hour, minute, diff } = computeClock(timeZone, locale)
       setTimeString(time)
       setHandsPath(clockHandsPath(hour, minute))
       setDiffText(diff)
@@ -33,7 +37,7 @@ export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
     const interval = setInterval(updateTime, 60000)
 
     return () => clearInterval(interval)
-  }, [timeZone])
+  }, [timeZone, locale])
 
   return (
     <IntroItem>
@@ -67,7 +71,7 @@ export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {
         </span>
       </IntroItemContent>
 
-      <InlineScript html={getInlineScript(timeZone, ids)} />
+      <InlineScript html={getInlineScript(timeZone, ids, locale)} />
     </IntroItem>
   )
 }
@@ -91,14 +95,14 @@ function clockHandsPath(hour: number, minute: number) {
 
 // Self-contained (globals only) so it can be serialized via `.toString()` into
 // the pre-hydration script as well as called directly from the effect.
-function computeClock(timeZone: string) {
+function computeClock(timeZone: string, locale: Locale) {
   const now = new Date()
 
   const time = new Intl.DateTimeFormat("en-US", {
     timeZone,
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true,
+    hour12: locale !== "zh",
   }).format(now)
   const hour = parseInt(time, 10)
   const minute = parseInt(time.slice(3), 10)
@@ -112,15 +116,20 @@ function computeClock(timeZone: string) {
     60000
   const hoursDiff = Math.abs(targetOffset - viewerOffset) / 60
   const diff =
-    hoursDiff < 1
-      ? " // same time"
-      : ` // ${Math.floor(hoursDiff)}h ${targetOffset > viewerOffset ? "ahead" : "behind"}`
+    locale === "zh"
+      ? hoursDiff < 1
+        ? " // 与你同一时区"
+        : ` // 比你${targetOffset > viewerOffset ? "快" : "慢"} ${Math.floor(hoursDiff)} 小时`
+      : hoursDiff < 1
+        ? " // same time"
+        : ` // ${Math.floor(hoursDiff)}h ${targetOffset > viewerOffset ? "ahead" : "behind"}`
 
   return { time, hour, minute, diff }
 }
 
 type CurrentLocalTimeItemProps = {
   timeZone: string
+  locale?: Locale
 }
 
 type ClockIds = { time: string; diff: string; hands: string }
@@ -130,11 +139,12 @@ type ClockIds = { time: string; diff: string; hands: string }
 function runClockScript(
   timeZone: string,
   ids: ClockIds,
+  locale: Locale,
   compute: typeof computeClock,
   handsPath: typeof clockHandsPath
 ) {
   try {
-    const { time, diff, hour, minute } = compute(timeZone)
+    const { time, diff, hour, minute } = compute(timeZone, locale)
     const t = document.getElementById(ids.time)
     if (t) t.textContent = time
     const d = document.getElementById(ids.diff)
@@ -147,6 +157,6 @@ function runClockScript(
 // Blocking inline script that paints the viewer-local clock before hydration
 // (Next.js "prevent flash before hydration"). Sharing `computeClock` with the
 // effect guarantees the pre-hydration value matches what React renders.
-function getInlineScript(timeZone: string, ids: ClockIds) {
-  return `(${runClockScript.toString()})(${JSON.stringify(timeZone)},${JSON.stringify(ids)},${computeClock.toString()},${clockHandsPath.toString()})`
+function getInlineScript(timeZone: string, ids: ClockIds, locale: Locale) {
+  return `(${runClockScript.toString()})(${JSON.stringify(timeZone)},${JSON.stringify(ids)},${JSON.stringify(locale)},${computeClock.toString()},${clockHandsPath.toString()})`
 }

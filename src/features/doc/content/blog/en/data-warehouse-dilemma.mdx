@@ -1,0 +1,1103 @@
+---
+title: "The data warehouse dilemma: data arrives, but responsibility, meaning, and experience do not"
+description: "Reflections on responsibility, business meaning, governance, and institutional knowledge in a large data warehouse, starting with ingestion, business definitions, and system boundaries."
+createdAt: "2026-08-21T09:00:00+08:00"
+updatedAt: "2026-08-21T09:00:00+08:00"
+locale: "en"
+translationKey: "data-warehouse-dilemma"
+tags: ["Data Warehousing", "Data Governance", "Data Engineering"]
+author: "jearhe"
+ads: false
+translatedAt: "2026-10-03"
+translationOf: "/blog/data-warehouse-dilemma"
+---
+
+There is always a last mile between technology and the business. In data warehousing, that last mile is especially visible.
+
+When I first started building data warehouses, the things I cared about were straightforward.
+
+Could we ingest the data, build the models, get the SQL to run, and deliver reports on time?
+
+After doing this for years, I increasingly feel that SQL may be the least troublesome part of the work.
+
+The things that really wear people down often happen outside SQL.
+
+Our lakehouse now ingests more than 3,800 tables from over 180 upstream systems. Downstream, it supports a large number of reports, regulatory submissions, interfaces, and more than 100 business systems.
+
+At that scale, one feeling becomes hard to miss:
+
+Almost every system has something to do with you.
+
+A change to the core banking system concerns you. A change to the lending system concerns you. A report from some management system concerns you. Even a new code value upstream may concern you.
+
+But when something actually goes wrong, it is often difficult to say, in one sentence, who should be responsible.
+
+The warehouse initially takes on data processing.
+
+Over time, it also starts taking on data cleansing, confirmation of business definitions, transfers between systems, incident investigation, requirements coordination, production support, asset management, and even the preservation of institutional knowledge.
+
+Many of these responsibilities were never part of anyone's original plan for the warehouse.
+
+They simply accumulated, little by little, as systems multiplied, requests increased, and time passed.
+
+This article is not an attempt to offer a standard answer.
+
+It is mainly a record of observations that have become increasingly clear over my years of working with data warehouses.
+
+---
+
+## I. Getting the data in does not end the problem
+
+### 1. A small amount of anomalous data consumes a large amount of time
+
+We now have more than 3,800 tables in the warehouse, drawn from over 180 upstream systems.
+
+With that many systems, inconsistent data standards now seem perfectly normal to me.
+
+Small and medium-sized banks, in particular, cannot develop every system from scratch themselves. Different systems come from different vendors, with different product histories, design habits, and data standards.
+
+It is hard to ask every source system to undergo a complete overhaul just to meet a bank-wide standard.
+
+The cost is too high, and it is not realistic.
+
+So much of the work naturally falls to the warehouse.
+
+Upstream data can take many forms. Once it enters the data platform, we try to cleanse, transform, map, and validate it so that it can be used as consistently as possible.
+
+When I first started development work, I also used to wonder: if the SQL for a report or interface is not complicated, why does it take so long?
+
+After doing more of it myself, I learned that the work is not that simple.
+
+Most requirements do not involve particularly advanced algorithms.
+
+Joins, filters, aggregations, and window functions: the same few operations recur.
+
+What takes time is something else.
+
+A field suddenly contains nulls.
+
+A code field that used to contain only 01, 02, and 03 gains a value of 04 one day, but nobody tells you.
+
+Two systems clearly describe the same business transaction, yet their amounts or statuses do not match.
+
+Some systems have table structures that are poorly suited to analysis in the first place.
+
+For some customer-related data, the source system does not even have a complete customer table. You end up deduplicating and piecing together transaction details just to reconstruct something usable.
+
+Technical testing finds a problem, so you go back and change it.
+
+Business testing uncovers another special case, so you change it again.
+
+Historical data exposes another issue after launch, and you change it again.
+
+The final SQL may be only a few dozen lines long.
+
+Yet a great deal of time has been spent answering one question:
+
+“Why does this record look like this?”
+
+That is why I have become increasingly reluctant to estimate work with my team solely by asking whether the SQL is complicated. Short code does not mean a simple task.
+
+---
+
+### 2. Many business definitions emerge during development rather than before it
+
+This is a very common situation in data warehousing.
+
+A request arrives, and the requester says:
+
+> I want a table.
+
+And then?
+
+At what grain?
+
+Which metrics should it contain?
+
+How, exactly, should those metrics be calculated?
+
+Where should the data come from?
+
+If the same field has several possible sources, which one takes precedence?
+
+Often, none of this has been fully thought through.
+
+Sometimes the request is even more direct:
+
+> Give me whatever fields the source system has. The more, the better.
+
+Or:
+
+> Combine table XXX1 and table XXX2 into a new table, XXX3.
+
+Viewed purely as a system feature, that sounds easy enough to understand.
+
+But anyone who works with data knows that whether two tables can be “combined” is not simply a matter of putting their fields together.
+
+One may contain a single record per business transaction.
+
+The other may contain more than a dozen detail records for the same transaction.
+
+Should we preserve the one-to-many relationship, or aggregate first?
+
+How should duplicates be handled?
+
+Which side supplies the amount?
+
+Which side supplies the status?
+
+What happens to historical data?
+
+Someone still has to answer those questions.
+
+And they are no longer SQL questions.
+
+In practice, development therefore often looks like this:
+
+Build an initial version based on the current understanding.
+
+The business tests it and feels that something is wrong.
+
+Talk some more. Change it. Test it again.
+
+As the conversations continue, everyone gradually discovers that the “table” they had in mind at the start was not the same table at all.
+
+By the time the definitions are more or less settled, a month or two may have passed.
+
+Then someone is likely to say:
+
+> Why is this requirement still not developed after two months? Did you not assign enough resources?
+
+Even now, hearing that makes me feel our data-team colleagues are being treated unfairly.
+
+From the requester's perspective, the request really has been open for two months.
+
+From the development side, however, the first month may not have been “development” at all. It may have been spent working with the business to define the requirement again from the ground up.
+
+Looking back, I do not think the problem is necessarily someone's inefficiency.
+
+Many requirements simply are not ready when they enter development.
+
+In the process, warehouse developers quietly take on part of the work of business analysis and aligning requirements between people.
+
+It is difficult to avoid this entirely. Its cost, however, is often invisible.
+
+---
+
+### 3. More tables do not necessarily mean reusable data products
+
+After a few years of warehouse development, the number of tables will inevitably grow.
+
+But I am increasingly unwilling to judge the quality of data assets by how many tables we have.
+
+Having many tables and having useful data are two different things.
+
+We often receive requests like this:
+
+> I need employee data. Just give me the same thing you already gave the other systems.
+
+It sounds reasonable.
+
+But once you ask more questions, you discover that “employee data” means different things to different people.
+
+Some need current organizational relationships.
+
+Some need historical organizational relationships.
+
+Some care about job positions.
+
+Some care about permissions.
+
+Some only need basic information.
+
+Others need particular business attributes.
+
+The same is true of customers, organizational units, accounts, products, and transactions.
+
+Without stable data products, even several thousand existing tables do not prevent a new request from starting with the same questions:
+
+Which table should we use?
+
+Which fields can we trust?
+
+Why was the data handled this way before?
+
+Are other systems still using this table?
+
+Does this definition actually fit the current use case?
+
+For a while, I found myself facing an awkward situation.
+
+We had more data and more tables, but repeated processing work was not decreasing noticeably.
+
+Eventually I realized that much of what we had accumulated was simply “tables.”
+
+We were still some distance from data products that people could pick up and use with confidence.
+
+---
+
+## II. Boundaries are often the hardest thing to explain
+
+### 4. A more capable lakehouse can become a universal adapter between systems
+
+One incident left a strong impression on me.
+
+In a group chat, I once saw someone from system A tell someone from system B:
+
+> Building a dedicated API for you would take too long. Just have the lakehouse extract my tables and push them over to you.
+
+Then a lakehouse developer was added to the chat.
+
+The only instruction was:
+
+> Coordinate the integration.
+
+Source tables? Not provided.
+
+Field descriptions? Not provided.
+
+Business definitions? Not provided.
+
+How to connect in the test environment? Not provided.
+
+How to integrate in production? Not provided either.
+
+They could not even clearly identify who was responsible on either side. I was furious.
+
+I posted our data-integration document in the group and asked both sides to fill in the source tables, fields, frequency, business definitions, owners, testing approach, and production data path before discussing development.
+
+But once they actually had to supply that information, both sides became evasive.
+
+Nobody wanted to take responsibility for the whole thing.
+
+After encountering enough similar situations, I gradually came to understand why this happens.
+
+What people really care about is:
+
+“Can the data get there?”
+
+Who defines it, who accepts it, and who to contact when it breaks are often questions deferred until something has already gone wrong.
+
+And the lakehouse happens to be particularly good at moving data.
+
+It can extract.
+
+It can compute.
+
+It can push.
+
+It can run on a schedule.
+
+Connecting another system is much faster than having both systems develop a new interface of their own.
+
+In the short term, it really does improve efficiency.
+
+The problem is that once it has happened once, it is likely to happen a second and a third time.
+
+Eventually, the lakehouse becomes a universal adapter between systems.
+
+---
+
+### 5. We take on system responsibilities without actually owning the systems
+
+Some management systems provide little more than basic create, read, update, and delete operations.
+
+More complex rule calculations, status decisions, and even core data processing depend heavily on the lakehouse.
+
+When everything is running normally, people rarely notice this dependency.
+
+As soon as a production problem occurs, the first response is often to add a lakehouse developer to a chat:
+
+> Please have the data team help investigate.
+
+We have heard that sentence far too often.
+
+Sometimes the investigation does reveal a lakehouse problem.
+
+Sometimes the problem is upstream.
+
+Sometimes the business rule itself is wrong.
+
+And sometimes, after a whole night of investigation, we discover that it has nothing to do with data at all.
+
+But it is hard to decline.
+
+The system already depends on your output in practice.
+
+This is something I have become increasingly uncomfortable with:
+
+We carry part of a system's responsibilities without actually owning that system.
+
+We do not decide when it goes live.
+
+We do not decide how its business rules are designed.
+
+We are not necessarily told in advance when the source system changes a field.
+
+Yet when the final data is wrong, we are guaranteed to be on the investigation list.
+
+Much of the exhaustion of production support comes from boundaries like these.
+
+---
+
+### 6. Data dependencies are often remembered only just before launch
+
+This has happened many times as well.
+
+A system has gone through requirements, design, and development and is already in testing.
+
+With only a few days left before launch, someone suddenly says:
+
+> Oh, right. This feature also needs a dataset from the lakehouse.
+
+Then we are added to a group chat at the last minute.
+
+By that point, there is little room left to discuss priorities.
+
+The requirement may still be unclear.
+
+There is no development schedule.
+
+The testing window is very short.
+
+But the launch date usually cannot change.
+
+Because the conversation eventually becomes:
+
+> If you do not provide this data, the project cannot go live.
+
+So we have to get on with it.
+
+Emergency development, emergency integration, emergency testing.
+
+Overtime to support the launch, if necessary.
+
+From outside, it looks like a “small request” slipped into the schedule.
+
+From the data team's perspective, it makes me want to swear. This dependency should clearly have been identified during requirements and design.
+
+If a system needs another dataset to operate after launch, that dataset is not something to add casually in the final few days.
+
+Yet many projects do not treat “where the data will come from” as equally important to functionality when making early architectural decisions.
+
+---
+
+### 7. Everyone's work is important, leaving the warehouse to make the trade-offs
+
+Another source of pressure in data warehousing is less visible.
+
+Almost every requester believes their work should take priority.
+
+That is understandable.
+
+Regulatory submissions obviously cannot be delayed.
+
+Production incidents obviously need immediate attention.
+
+A major project about to launch cannot wait either.
+
+If integration testing for a business system is blocked, its entire project team may be waiting for your one dataset.
+
+Meanwhile, your own team still has scheduled requirements, platform improvements, data governance, and technical debt to address.
+
+No requester is going to volunteer:
+
+> Mine is not urgent. Do someone else's first.
+
+So the task of setting priorities ultimately falls to the data team itself.
+
+How do regulatory submissions rank against ordinary requests?
+
+How do production incidents rank against project delivery?
+
+Should a small development task with high risk jump the queue?
+
+During integration testing for a major project, should the original plan all move back?
+
+The size of the team usually does not increase overnight.
+
+Unplanned work, however, can.
+
+Sometimes a carefully planned month is reshuffled four or five times by production issues, major projects, and last-minute requests.
+
+Then, at the end of the month, someone asks:
+
+> Why has this requirement still not been finished?
+
+“We have been busy lately” is hardly enough to explain it.
+
+The other person cannot see everything that happened during that month.
+
+That is why I increasingly feel that warehouse resourcing is not just a question of having enough people.
+
+The harder problem is the volume of unplanned work, much of which leaves no real option to say no.
+
+---
+
+### 8. Lineage can show who is affected, but people still have to resolve what follows
+
+We have spent years working on lineage and impact analysis.
+
+That is undoubtedly the right direction.
+
+Previously, when an upstream team said it would change a table, people would judge from experience and think perhaps two reports would be affected.
+
+Once we traced the lineage, we might discover more than 50 downstream programs.
+
+With lineage, at least we no longer have to guess.
+
+But the deeper I get into this work, the more clearly I see that lineage cannot solve everything.
+
+It can tell you:
+
+If this field changes, these downstream consumers will be affected.
+
+But plenty of questions remain:
+
+How much notice should the upstream team give?
+
+Can a field simply be deleted?
+
+Does adding a code value require notification?
+
+When does a type change count as a major change?
+
+How long should an old field remain available?
+
+When will a test environment be provided?
+
+Who will organize regression testing across more than 50 downstream consumers?
+
+A lineage diagram cannot answer these questions on its own.
+
+Eventually, lineage work naturally brings you to another question: are there actually any rules for changes between systems?
+
+Without those rules, even if we know perfectly well today that 50 programs are affected, the response may still be to create a group chat and coordinate everything from scratch.
+
+---
+
+## III. One major project can pull the entire warehouse into its orbit
+
+### 9. An upstream system change often becomes an end-to-end change for the data team
+
+There are certain kinds of work where simply hearing the project name now tells me the team will be busy for some time.
+
+A new core banking system, a new acquiring system, an international-business FTU overhaul, a new performance-management system, a new lending system...
+
+If a system is important enough, it is almost impossible for its changes to have nothing to do with data development.
+
+Important systems rarely serve only themselves.
+
+Their data may already be in the warehouse.
+
+A large number of reports may depend on it.
+
+Regulatory submissions may use it.
+
+Other systems may receive its processed output through the lakehouse.
+
+Management analysis, performance measurement, and interfaces may also depend on it through multiple layers.
+
+So when the upstream project says:
+
+> The core banking system is being upgraded.
+
+What we hear is something else:
+
+Source tables may change.
+
+Fields may change.
+
+Code values may change.
+
+Business rules may change.
+
+The grain of the data may change too.
+
+Then that entire chain of downstream dependencies needs to be checked again.
+
+The hardest part of these projects is often not how many programs need to be written.
+
+Major projects usually have firm launch dates.
+
+Projects involving core banking, lending, or international business are unlikely to be postponed for several months because the warehouse workload is large.
+
+As soon as one enters a critical phase, the team's scheduled ordinary requests, governance work, and optimization work generally have to give way.
+
+From outside, this looks like “supporting a project.”
+
+For the team, it may mean rewriting the plan for the next several months.
+
+And testing is often what consumes the most energy.
+
+Sometimes an upstream table changes, but the actual amount of SQL we modify is small.
+
+Yet it is not enough to prove:
+
+> The new data can enter the warehouse.
+
+You also have to look downstream.
+
+Does the original processing logic still hold?
+
+Has the data volume changed significantly?
+
+Have code values changed?
+
+Has the primary key changed?
+
+Has a relationship that used to be one-to-one become one-to-many?
+
+Are daily reports still correct? What about monthly reports?
+
+What about regulatory submissions?
+
+What about data sent through interfaces?
+
+Can downstream systems still consume it correctly?
+
+Sometimes a tiny code change produces a very long regression checklist.
+
+Because the thing you really need to prove is not “I finished the change.”
+
+It is “this change did not break what already existed.”
+
+That takes a great deal of effort, and it is particularly easy to underestimate.
+
+Running the old and new systems in parallel makes things more complicated.
+
+For something like a new acquiring system, it is not a matter of switching off the old system on a certain date and having the new one take over seamlessly.
+
+There is always a transition.
+
+How do old and new data correspond?
+
+How is historical data joined across the launch date?
+
+Can the same business transaction be reconciled between both systems?
+
+Do both processing paths need to run during the parallel period?
+
+Which result is authoritative if they differ?
+
+Can we switch back if the new system fails?
+
+Add migration of existing data, and there is even more to do.
+
+Balances must be reconciled.
+
+Record counts must be reconciled.
+
+Key metrics must be reconciled.
+
+Historical completeness must be checked too.
+
+At this point, the warehouse is no longer merely “connecting a few new tables.”
+
+We are participating in the data acceptance process for the entire system cutover.
+
+More troublesome still, the upstream launch does not mean the warehouse work is finished.
+
+Everything working on launch day only proves that launch day worked.
+
+What about the first business day?
+
+The first end-of-day batch? The first month-end?
+
+The first regulatory submission?
+
+Rare business cases that occur only a few times a year?
+
+New code values that never appeared in the test environment?
+
+Many problems do not surface on launch day.
+
+Meetings, reviews, field checks, data exploration, integration testing, fault investigation, old-versus-new data comparisons, test-data preparation, supporting business validation, production rehearsals, launch support, backfills...
+
+It is difficult to capture all this work in a count of “requirements developed.”
+
+Sometimes, after months spent on a project, looking back at the code commits makes it seem as though we added very little.
+
+But the people were occupied for months.
+
+After a few projects like this, I no longer start by asking how much needs to be developed.
+
+Instead, I first ask:
+
+How many data paths must we prove correct again this time?
+
+For the upstream team, it may be a system upgrade.
+
+For the data team, it is often a migration, compatibility, and end-to-end regression effort.
+
+And although the warehouse team is rarely the first to join the project, it is often among the last to truly leave it.
+
+---
+
+## IV. The more stable the platform, the busier its maintainers become
+
+### 10. “We can do it” easily becomes “you should already do it”
+
+As technical capabilities improve, the business keeps raising its expectations for data freshness.
+
+At first, next-day data, or T+1, is enough.
+
+Then people want it earlier in the morning.
+
+Then they want it on the same day.
+
+Then every half hour, every five minutes, and in real time.
+
+Technically, most of these things are not impossible.
+
+The problem is that moving up each level costs more than simply adding a few machines.
+
+Scheduling needs to change.
+
+Capacity needs to be reassessed.
+
+Upstream systems need to be more reliable.
+
+Retries, backfills, and monitoring become more complicated.
+
+Production support has to improve as well.
+
+But people outside the team rarely see that process.
+
+What they tend to remember is:
+
+> Didn't you already get that other system down to five minutes?
+
+The first time is a special request.
+
+The second time becomes a precedent.
+
+By the third, it starts to become an assumed capability.
+
+“We can do it” gradually turns into “you should already be doing it.”
+
+I do not think it is fair simply to blame the business for this.
+
+Once the capability exists, people naturally want to use the better option.
+
+What really needs to be worked out in advance is the service level each dataset actually requires.
+
+For some data, real time is very valuable.
+
+For other data, T+1 is entirely sufficient.
+
+If every request defaults to the highest possible freshness, the platform itself will ultimately carry the complexity.
+
+---
+
+### 11. The more important the platform becomes, the harder it is to find uninterrupted time to improve it
+
+I have felt this cycle very clearly.
+
+Every day, the warehouse has many things that cannot be ignored.
+
+Batch-job failures.
+
+Late upstream data.
+
+Missing files.
+
+Interface failures.
+
+Database issues.
+
+Unexpected upstream data changes.
+
+Backfills.
+
+Reruns.
+
+Coordination with upstream and downstream teams.
+
+At the beginning and end of the month, there are also large numbers of reports and regulatory submissions.
+
+All these tasks share one characteristic:
+
+If they happen today, someone has to deal with them today.
+
+Architectural improvements, data-asset development, automation, governance, technical debt, and team capability usually do not cause the system to fail tonight if they are skipped today.
+
+So they are the easiest things to push back.
+
+Do it tomorrow.
+
+Do it next week.
+
+Do it after this project finishes.
+
+Do it after month-end.
+
+But as soon as one project finishes, the next arrives.
+
+I used to wonder whether better planning would let us find time for these things.
+
+Eventually I realized it was not that simple.
+
+Maintaining a platform that already carries a large production workload continuously consumes the team's energy.
+
+Less governance leads to more incidents and repeated work.
+
+More incidents and repeated work leave even less time for governance.
+
+Once that cycle forms, saying “improve governance” is unlikely to break it.
+
+If a team spends 80% of its energy ensuring that yesterday's systems keep running today, it has very little room left to build for tomorrow.
+
+---
+
+### 12. A green scheduler does not mean the data is correct
+
+Working with data makes you particularly alert to this.
+
+A program can execute perfectly normally.
+
+The SQL reports no error.
+
+The scheduling dashboard is green.
+
+The data is successfully written to the target table.
+
+And the result can still be wrong.
+
+An upstream batch may be missing.
+
+A join condition may have doubled the rows.
+
+A new code value may not be covered by the existing logic.
+
+The business meaning of a field may have changed.
+
+The implementation may even match the requirements document perfectly, while the document itself was based on a misunderstanding from the start.
+
+That is why data testing is never quite the same as ordinary program testing.
+
+Whether the program ran successfully answers only part of the question.
+
+You also have to check:
+
+Whether the data volume is normal.
+
+Whether the distribution has changed significantly.
+
+Whether historical trends make sense.
+
+Whether upstream and downstream figures reconcile.
+
+Whether the business considers the results consistent with real situations.
+
+This is why some problems evade technical testing entirely and appear only during business testing or even in production.
+
+It is not that the program failed to run.
+
+Quite the opposite.
+
+The program ran very successfully.
+
+It successfully produced incorrect data.
+
+---
+
+## V. Systems remain, but people will change
+
+### 13. Some programs run every day, yet it is no longer clear who really owns them
+
+The longer a lakehouse operates, the more visible this problem becomes.
+
+There are more and more scripts.
+
+But their owners do not necessarily become any clearer.
+
+We cannot bind every program forever to the developer who originally wrote it.
+
+In practice, responsibilities are usually divided roughly by subject areas such as customers, accounts, and products.
+
+But real data paths also contain many intermediate tables, shared tables, historical compatibility jobs, and programs that once looked like one-off requests yet somehow kept running for years.
+
+After several rounds of personnel changes, a familiar situation emerges:
+
+The program still runs normally every day.
+
+But when something actually goes wrong, nobody can immediately say:
+
+> This is my responsibility.
+
+So we have to follow the data path.
+
+Ask upstream:
+
+> Do you produce this data?
+
+Then ask downstream:
+
+> Are you using this table?
+
+In the end, a few people who know the history take the issue on based on experience.
+
+We used to be accustomed to managing programs according to who wrote the code.
+
+I have increasingly come to feel that this works early in a system's life but breaks down over time.
+
+Because the person responsible for the code changes.
+
+What should persist is probably the set of responsibilities attached to the data itself.
+
+Who stands behind the business definition?
+
+Who keeps it running in production?
+
+Who looks after its quality?
+
+Who uses it?
+
+Who can make a final decision when a dispute arises?
+
+If these relationships are not retained alongside the data, they become harder to explain as time passes.
+
+---
+
+### 14. The people building data platforms still manage their own data assets in Excel
+
+I consider this, first of all, a failure in my own management.
+
+After all these years, much of the information about our own data assets is still maintained in Excel and documents.
+
+Which tables do we have?
+
+Which interfaces do we have?
+
+Who uses them?
+
+What do the fields mean?
+
+Where does the data come from?
+
+How often is it updated?
+
+Who is responsible?
+
+Much of this information remains scattered across XLSX files, documents, or a few people's heads.
+
+There is something rather ironic about that.
+
+We help other people build data systems every day, yet we have not properly turned our own asset management into managed data.
+
+Of course, I am not saying Excel is bad.
+
+With a small amount of information, Excel works very well and may even be the most efficient option.
+
+The problem comes when you reach thousands of tables, hundreds of systems, more than a thousand reports, and a collection of interfaces. It starts to struggle.
+
+At that point, the question people actually want to answer is no longer:
+
+> Which tables do we have?
+
+Instead, they ask:
+
+What is this table actually for?
+
+Where does its data come from?
+
+Who uses it?
+
+Why is it processed this way?
+
+Who is responsible?
+
+Has anyone used it recently?
+
+Who will be affected if I change this field?
+
+Who should I contact first when something goes wrong?
+
+If you cannot look up that information, even a beautifully organized asset register remains just a register.
+
+That was one of my direct reasons for wanting to build something like the [Data Asset Portal](https://data.overme.cn/).
+
+The aim was not to move Excel onto a web page.
+
+It was that many relationships previously kept in people's memories had reached the point where the system should maintain them itself.
+
+---
+
+### 15. Upstream teams do not know where their data goes, and downstream teams do not know where theirs comes from
+
+Once, after an upstream system change went live, a lakehouse job failed in the early hours of the morning.
+
+We called the upstream owner.
+
+After hearing what had happened, the owner was surprised:
+
+> My system sends data to the warehouse too?
+
+The first time you hear that, it seems hard to believe.
+
+Thinking about it later, though, I could not entirely blame the person.
+
+Years after a system is connected to the lakehouse, the person who originally handled the integration may have left or changed roles.
+
+The successor mainly looks after the system's own business functions.
+
+As long as extraction keeps working, there may be no occasion to discover that another platform still reads several of its tables every day.
+
+Much the same is true downstream.
+
+The business may know:
+
+> My report uses this metric.
+
+But it may not know how many processing layers the metric passes through or which source systems it depends on.
+
+When everything works, nobody needs to know that much.
+
+As soon as something changes upstream, the problem appears.
+
+The upstream team does not know who its change will affect.
+
+The downstream team does not know its data source has changed either.
+
+I used to think of lineage mainly as a way to display data assets.
+
+Now I increasingly see it first as part of controlling production risk.
+
+It is not about how attractive the diagram looks.
+
+It is about at least knowing whose door to knock on when an upstream team wants to change something.
+
+---
+
+### 16. Documentation can hand over a procedure, but rarely a person's entire judgment
+
+The longer a system runs, the more I feel that the hardest things to hand over are not necessarily in the code.
+
+For example:
+
+Why was this field handled this way back then?
+
+Why can this job not simply be rerun after it fails?
+
+What unusual problems has this source system had in the past?
+
+Which production anomalies can be fixed by directly backfilling data?
+
+Which ones require confirmation from the business first?
+
+Why has nobody dared to delete this code even though it looks redundant?
+
+These things can, of course, be documented.
+
+And they should be.
+
+But in a real production situation, many judgments cannot be learned by reading an operations manual once.
+
+Some experience comes from a production incident.
+
+Some comes from a past project.
+
+And some things become clear only after a person has handled similar cases many times:
+
+“This situation looks the same, but we cannot handle it the same way.”
+
+That has changed my understanding of handovers too.
+
+Clearly explaining what to do is only the first layer.
+
+The harder part is clearly explaining:
+
+Why we do it this way.
+
+Why we cannot do it that way here.
+
+What criteria should guide the decision if the situation changes.
+
+People will change.
+
+System complexity, meanwhile, mostly moves in one direction: upward.
+
+If we preserve experience more slowly than complexity grows, every personnel change will take a little knowledge away.
+
+And it is often only when the next anomaly occurs that everyone realizes nobody knows the answer anymore.
+
+---
+
+## VI. After years of this work, I care less about how much more data we can connect
+
+Looking back at these problems, they appear quite different on the surface.
+
+Some concern data quality.
+
+Some concern requirements.
+
+Some concern system boundaries.
+
+Some concern project management.
+
+Some concern asset governance.
+
+Some concern production stability.
+
+Some concern staff handovers.
+
+Yet many of them ultimately land with the warehouse.
+
+The reason is not complicated.
+
+The warehouse connects many business systems, but it does not own those systems.
+
+We are responsible for processed results without having full control over the sources.
+
+We support many business requirements without having the final authority over business decisions.
+
+We carry a large production-support burden without being able to control every upstream change.
+
+From this position, problems that originally belong to different systems, departments, and stages eventually reveal themselves along the data path.
+
+When I first started working on warehouses, my main concern was:
+
+Can we get the data in?
+
+Later, it became:
+
+Are we processing the data correctly?
+
+Later still, I began to care about whether people could find, understand, and reuse it.
+
+Now, I increasingly feel that the hardest thing to manage is no longer the data itself.
+
+We can always create a table.
+
+We can always write SQL.
+
+We can usually find a way to connect the data.
+
+The real difficulty is whether, years later, after the systems and the people have changed, we can still clearly answer:
+
+Why is this data here?
+
+Why was this business definition chosen?
+
+Who uses it?
+
+Who should be responsible?
+
+Who will be affected when the upstream system changes?
+
+Why, exactly, can those strange-looking pieces of historical logic not be deleted?
+
+Data can enter the warehouse automatically through ETL.
+
+Responsibility cannot.
+
+Business meaning cannot.
+
+Institutional experience cannot either.
+
+Unless we deliberately preserve these things, we will continue to depend on people to carry them.
+
+Perhaps this is what I now understand to be the warehouse's real last mile.
+
+**Data can enter the warehouse, but responsibility, meaning, and experience do not arrive automatically.**

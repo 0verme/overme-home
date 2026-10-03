@@ -3,7 +3,13 @@ import path from "path"
 import { cache } from "react"
 import matter from "gray-matter"
 
+import type { Locale } from "@/lib/i18n"
 import type { Doc, DocMetadata } from "@/features/doc/types/document"
+
+export const BLOG_CATEGORY = "blog"
+export const COMPONENTS_CATEGORY = "components"
+
+const CONTENT_PATH = "src/features/doc/content"
 
 function parseFrontmatter(fileContent: string) {
   const file = matter(fileContent)
@@ -23,70 +29,70 @@ function readMDXFile(filePath: string) {
   return parseFrontmatter(rawContent)
 }
 
-/**
- * Reads MDX docs from `dir`, grouping them by their immediate subfolder.
- * The subfolder name is the doc's category (e.g. `content/components/*.mdx`
- * yields docs with `category: "components"`), so category is derived from the
- * file location rather than declared in frontmatter. Files placed directly in
- * `dir` (e.g. shared `props.ts`) are ignored — only category folders are read.
- */
-function getMDXData(dir: string) {
-  const categoryDirs = fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
+function readCategory(category: string, locale?: Locale): Doc[] {
+  const relativePath = locale
+    ? `${CONTENT_PATH}/${category}/${locale}`
+    : `${CONTENT_PATH}/${category}`
+  const directory = locale
+    ? path.join(process.cwd(), "src/features/doc/content", category, locale)
+    : path.join(process.cwd(), "src/features/doc/content", category)
 
-  return categoryDirs.flatMap((categoryDir) => {
-    const category = categoryDir.name
-    const categoryPath = path.join(dir, category)
+  return getMDXFiles(directory).map((file) => {
+    const { metadata, content } = readMDXFile(path.join(directory, file))
 
-    return getMDXFiles(categoryPath).map<Doc>((file) => {
-      const { metadata, content } = readMDXFile(path.join(categoryPath, file))
-
-      const slug = path.basename(file, path.extname(file))
-
-      return {
-        metadata: { ...metadata, category },
-        slug,
-        content,
-      }
-    })
+    return {
+      metadata: {
+        ...metadata,
+        category,
+        ...(locale ? { locale } : {}),
+        sourcePath: `${relativePath}/${file}`,
+      },
+      slug: path.basename(file, path.extname(file)),
+      content,
+    }
   })
 }
 
-export const getAllDocs = cache(() => {
-  return getMDXData(path.join(process.cwd(), "src/features/doc/content")).sort(
-    (a, b) => {
-      if (a.metadata.pinned && !b.metadata.pinned) return -1
-      if (!a.metadata.pinned && b.metadata.pinned) return 1
+function sortDocs(docs: Doc[]): Doc[] {
+  return docs.sort((a, b) => {
+    if (a.metadata.pinned && !b.metadata.pinned) return -1
+    if (!a.metadata.pinned && b.metadata.pinned) return 1
 
-      return (
-        new Date(b.metadata.createdAt).getTime() -
-        new Date(a.metadata.createdAt).getTime()
-      )
-    }
-  )
+    return (
+      new Date(b.metadata.createdAt).getTime() -
+      new Date(a.metadata.createdAt).getTime()
+    )
+  })
+}
+
+/** Blog slugs are unique within a locale, rather than across every document. */
+export const getBlogPosts = cache((locale: Locale = "zh") => {
+  return sortDocs(readCategory(BLOG_CATEGORY, locale))
+})
+
+export function getBlogPost(slug: string, locale: Locale = "zh") {
+  return getBlogPosts(locale).find((doc) => doc.slug === slug)
+}
+
+export const getComponentDocs = cache(() => {
+  return sortDocs(readCategory(COMPONENTS_CATEGORY))
+})
+
+export function getComponentDoc(slug: string) {
+  return getComponentDocs().find((doc) => doc.slug === slug)
+}
+
+/** Legacy consumers receive the default-language blog and component docs. */
+export const getAllDocs = cache(() => {
+  return sortDocs([...getBlogPosts("zh"), ...getComponentDocs()])
 })
 
 export function getDocBySlug(slug: string) {
-  return getAllDocs().find((doc) => doc.slug === slug)
+  return getBlogPost(slug, "zh") ?? getComponentDoc(slug)
 }
 
 export function getDocsByCategory(category: string) {
-  return getAllDocs().filter((doc) => doc.metadata?.category === category)
-}
-
-/** Categories derived from the doc's content subfolder. */
-export const BLOG_CATEGORY = "blog"
-export const COMPONENTS_CATEGORY = "components"
-
-/** Blog posts — docs under the `blog/` content folder. */
-export function getBlogPosts() {
-  return getDocsByCategory(BLOG_CATEGORY)
-}
-
-/** Component docs — docs under the `components/` content folder. */
-export function getComponentDocs() {
-  return getDocsByCategory(COMPONENTS_CATEGORY)
+  return getAllDocs().filter((doc) => doc.metadata.category === category)
 }
 
 export function findNeighbour(docs: Doc[], slug: string) {

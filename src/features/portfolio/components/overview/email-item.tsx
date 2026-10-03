@@ -8,6 +8,7 @@ import { MailIcon } from "lucide-react"
 import { useHotkeys } from "react-hotkeys-hook"
 
 import { trackEvent } from "@/lib/events"
+import type { Locale } from "@/lib/i18n"
 import { useIsClient } from "@/hooks/use-is-client"
 import { toast } from "@/components/ui/toast"
 import { CopyButton } from "@/components/copy-button"
@@ -22,9 +23,10 @@ import { RevealEncodedTextScript } from "./reveal-encoded-text"
 
 type EmailItemProps = {
   emailB64: string
+  locale?: Locale
 }
 
-export function EmailItem({ emailB64 }: EmailItemProps) {
+export function EmailItem({ emailB64, locale = "zh" }: EmailItemProps) {
   const id = useId()
   const isClient = useIsClient()
   const emailDecoded = decodeEmail(emailB64)
@@ -40,7 +42,10 @@ export function EmailItem({ emailB64 }: EmailItemProps) {
       },
     })
     success()
-    toast.add({ type: "success", title: "Email copied" })
+    toast.add({
+      type: "success",
+      title: locale === "zh" ? "邮箱已复制" : "Email copied",
+    })
   })
 
   return (
@@ -64,6 +69,7 @@ export function EmailItem({ emailB64 }: EmailItemProps) {
           className="rounded-md border-none text-muted-foreground [&_svg:not([class*='size-'])]:size-4"
           variant="ghost"
           size="icon-xs"
+          aria-label={locale === "zh" ? "复制邮箱地址" : "Copy email address"}
           text={() => emailDecoded}
           onCopySuccess={() => {
             trackEvent({

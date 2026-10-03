@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n"
 import { Markdown } from "@/components/markdown"
 import { HelloTitle } from "@/features/portfolio/components/hello-title"
 import {
@@ -5,21 +6,21 @@ import {
   PanelContent,
   PanelHeader,
 } from "@/features/portfolio/components/panel"
-import { USER } from "@/features/portfolio/data/user"
+import { getUser } from "@/features/portfolio/data/user"
 
 const ID = "hello"
 
-export function Hello() {
+export function Hello({ locale = "zh" }: { locale?: Locale }) {
   return (
     <Panel id={ID} className="screen-line-bottom-none">
       <PanelHeader>
-        <h2 className="sr-only">About</h2>
-        <HelloTitle />
+        <h2 className="sr-only">{locale === "zh" ? "关于我" : "About"}</h2>
+        <HelloTitle locale={locale} />
       </PanelHeader>
 
       <PanelContent>
         <div className="typeset typeset-description [&_li]:ps-0.5 [&_ul]:ps-3.5">
-          <Markdown>{USER.about}</Markdown>
+          <Markdown>{getUser(locale).about}</Markdown>
         </div>
       </PanelContent>
 

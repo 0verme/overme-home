@@ -1,21 +1,15 @@
-import { PROJECTS } from "@/features/portfolio/data/projects"
+import { markdownResponse } from "@/features/blog/lib/publishing"
+import { getProjects } from "@/features/portfolio/data/projects"
 
-const content = `# Projects
-
-${PROJECTS.map((item) => {
-  const skills = `\n\nSkills: ${item.skills.join(", ")}`
-  const description = item.description ? `\n\n${item.description.trim()}` : ""
-  return `## ${item.title}\n\nProject URL: ${item.link}${skills}${description}`
-}).join("\n\n")}
-`
-
-export const revalidate = false
 export const dynamic = "force-static"
-
-export async function GET() {
-  return new Response(content, {
-    headers: {
-      "Content-Type": "text/markdown;charset=utf-8",
-    },
-  })
+export function GET() {
+  return markdownResponse(
+    "# 精选项目\n\n" +
+      getProjects("zh")
+        .map(
+          (p) =>
+            `## ${p.title}\n\n${p.summary}\n\n${p.description || ""}\n\nGitHub: ${p.repositoryUrl}\n${p.demoUrl ? "Demo: " + p.demoUrl : ""}`
+        )
+        .join("\n\n")
+  )
 }

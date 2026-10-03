@@ -1,0 +1,207 @@
+[
+  {
+    "source": "https://blog.overme.cn/",
+    "destination": "https://overme.cn/",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/about/",
+    "destination": "https://overme.cn/#hello",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/posts/",
+    "destination": "https://overme.cn/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/archives/",
+    "destination": "https://overme.cn/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/search/",
+    "destination": "https://overme.cn/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/",
+    "destination": "https://overme.cn/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tokens/",
+    "destination": "https://token.overme.cn/",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/rss.xml",
+    "destination": "https://overme.cn/blog/rss",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/posts/hello-world/",
+    "destination": "https://overme.cn/blog/hello-world",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/posts/building-lineage-viewer/",
+    "destination": "https://overme.cn/blog/building-lineage-viewer",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/posts/ai-only-interprets-ledger-actions/",
+    "destination": "https://overme.cn/blog/ai-only-interprets-ledger-actions",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/posts/data-warehouse-dilemma/",
+    "destination": "https://overme.cn/blog/data-warehouse-dilemma",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/ai/",
+    "destination": "https://overme.cn/blog?tag=AI",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/fastapi/",
+    "destination": "https://overme.cn/blog?tag=FastAPI",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/typescript/",
+    "destination": "https://overme.cn/blog?tag=TypeScript",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/web-components/",
+    "destination": "https://overme.cn/blog?tag=Web%20Components",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/",
+    "destination": "https://overme.cn/blog?tag=%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B/",
+    "destination": "https://overme.cn/blog?tag=%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/%E6%95%B0%E6%8D%AE%E6%B2%BB%E7%90%86/",
+    "destination": "https://overme.cn/blog?tag=%E6%95%B0%E6%8D%AE%E6%B2%BB%E7%90%86",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/",
+    "destination": "https://overme.cn/blog?tag=%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/%E9%9A%8F%E7%AC%94/",
+    "destination": "https://overme.cn/blog?tag=%E9%9A%8F%E7%AC%94",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/tags/%E5%86%99%E4%BD%9C/",
+    "destination": "https://overme.cn/blog?tag=%E5%86%99%E4%BD%9C",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/",
+    "destination": "https://overme.cn/en",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/about/",
+    "destination": "https://overme.cn/en#hello",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/posts/",
+    "destination": "https://overme.cn/en/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/archives/",
+    "destination": "https://overme.cn/en/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/search/",
+    "destination": "https://overme.cn/en/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/",
+    "destination": "https://overme.cn/en/blog",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tokens/",
+    "destination": "https://token.overme.cn/",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/rss.xml",
+    "destination": "https://overme.cn/en/blog/rss",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/posts/hello-world/",
+    "destination": "https://overme.cn/en/blog/hello-world",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/posts/building-lineage-viewer/",
+    "destination": "https://overme.cn/en/blog/building-lineage-viewer",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/posts/ai-only-interprets-ledger-actions/",
+    "destination": "https://overme.cn/en/blog/ai-only-interprets-ledger-actions",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/ai/",
+    "destination": "https://overme.cn/en/blog?tag=AI",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/fastapi/",
+    "destination": "https://overme.cn/en/blog?tag=FastAPI",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/typescript/",
+    "destination": "https://overme.cn/en/blog?tag=TypeScript",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/web-components/",
+    "destination": "https://overme.cn/en/blog?tag=Web%20Components",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/data-engineering/",
+    "destination": "https://overme.cn/en/blog?tag=Data%20Engineering",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/system-design/",
+    "destination": "https://overme.cn/en/blog?tag=System%20Design",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/notes/",
+    "destination": "https://overme.cn/en/blog?tag=Notes",
+    "status": 308
+  },
+  {
+    "source": "https://blog.overme.cn/en/tags/writing/",
+    "destination": "https://overme.cn/en/blog?tag=Writing",
+    "status": 308
+  }
+]

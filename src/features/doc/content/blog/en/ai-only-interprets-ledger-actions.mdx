@@ -1,0 +1,56 @@
+---
+title: "In a Ledger, AI Should Interpret Rather Than Decide"
+description: "How LarkLedger separates natural-language understanding from deterministic ledger logic and adds confirmation boundaries to risky inputs."
+createdAt: "2026-08-08T09:00:00+08:00"
+updatedAt: "2026-08-08T09:00:00+08:00"
+locale: "en"
+translationKey: "ai-only-interprets-ledger-actions"
+tags: ["AI", "FastAPI", "System Design"]
+author: "jearhe"
+ads: false
+---
+
+“Lunch, 32 yuan” is an excellent sentence for a language model to understand. How that expense is ultimately written to a ledger should not be left to the model's discretion.
+
+That boundary became increasingly important while building [LarkLedger](https://github.com/0verme/LarkLedger): AI translates unstructured input into a candidate business action, while a deterministic application layer validates, authorizes, and persists it.
+
+## From a sentence to a business action
+
+The user-facing input can remain natural: text, voice, or a receipt image. Internally, the system needs explicit fields such as amount, currency, category, date, account, and payer.
+
+A model is useful for the first transformation, but its output must pass schema validation and business rules. Whether an account belongs to the current user, whether a family member can see a private account, and whether a transfer is incorrectly counted as spending cannot depend on the model getting it right.
+
+```text
+User input
+  → AI parses a candidate action
+  → schema validation
+  → authorization and business rules
+  → deterministic ledger service
+  → PostgreSQL
+```
+
+## Higher risk requires clearer confirmation
+
+A simple, unambiguous text entry can be written directly. Images, voice, batch operations, and suspected duplicates first become pending confirmations and are persisted only after user approval.
+
+The pending record freezes the parsed structured action. Confirmation does not call the model again, preventing the same receipt from receiving a different amount or category on a second inference.
+
+The intention is not to slow down every interaction. It is to match friction to risk: keep low-risk operations fluid and add an explicit human checkpoint to high-risk ones.
+
+## Idempotency is a product capability
+
+Chat platforms retry events and network requests time out. If a service simply inserts a row whenever it receives a request, duplicate entries are inevitable.
+
+LarkLedger claims Feishu events by event ID and requires an `Idempotency-Key` for Client API and Web writes. The same key and request can be replayed safely; the same key with different content produces a conflict. Idempotency is not merely a backend detail—it determines whether users can trust the ledger.
+
+## AI does not perform financial calculations
+
+Budget utilization, account balances, goal progress, and recurring bills are computed by deterministic rules. AI may optionally rewrite an explanation, but it does not query the database to perform the calculation and cannot move money.
+
+A statement such as “spending is higher than the recent three-month average” should come from reproducible data, not from a model's impression after reading a few transactions.
+
+## Multiple adapters, one core
+
+The Feishu bot, Web interface, and structured Client API are adapters. They share the same application service and domain results, preventing each new channel from creating another copy of ledger logic.
+
+The project is self-hosted with FastAPI, React, PostgreSQL, and Docker Compose. It remains under active development and does not turn retries and idempotency into an unrealistic promise of zero loss or duplication. Keeping AI inside an appropriate boundary is simply the first step toward making this kind of tool trustworthy.

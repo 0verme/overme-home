@@ -1,6 +1,7 @@
 import { addQueryParams } from "@/utils/url"
 
 import { UTM_PARAMS } from "@/config/site"
+import type { Locale } from "@/lib/i18n"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -15,12 +16,14 @@ import { Panel, PanelContent } from "@/features/portfolio/components/panel"
 import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons"
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 
-export function SocialLinks() {
+export function SocialLinks({ locale = "zh" }: { locale?: Locale }) {
   if (SOCIAL_LINKS.length === 0) return null
 
   return (
     <Panel className="screen-line-bottom-line">
-      <h2 className="sr-only">Social links</h2>
+      <h2 className="sr-only">
+        {locale === "zh" ? "社交账号" : "Social links"}
+      </h2>
 
       <PanelContent>
         <ul className="flex flex-wrap gap-2">
@@ -57,7 +60,9 @@ export function SocialLinks() {
       </PanelContent>
 
       <HandwrittenNote className="-top-4 right-full mr-4 hidden w-20 flex-col items-end lg:flex">
-        <span className="-rotate-6">follow the project</span>
+        <span className="-rotate-6">
+          {locale === "zh" ? "保持联系" : "let's connect"}
+        </span>
         <HandwrittenArrow className="size-7 translate-x-3 -scale-x-100 -rotate-6" />
       </HandwrittenNote>
     </Panel>

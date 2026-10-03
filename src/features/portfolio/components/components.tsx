@@ -9,7 +9,7 @@ import {
   ComponentItemDot,
   ComponentItemIcon,
   ComponentItemTitle,
-} from "@/app/(app)/(pages)/components/component-item"
+} from "@/app/(tools)/(app)/(pages)/components/component-item"
 import { ComponentIcon } from "@/features/doc/components/component-icon"
 import { getComponentDocs } from "@/features/doc/data/documents"
 

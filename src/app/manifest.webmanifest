@@ -1,7 +1,8 @@
 {
   "short_name": "0verme",
-  "name": "0verme Home",
-  "description": "A customizable open-source starter with a component registry.",
+  "name": "0verme · 见远而行",
+  "description": "数据工程、AI 工具与独立开发的作品和实践札记。",
+  "lang": "zh-CN",
   "icons": [
     {
       "src": "/icon.svg",

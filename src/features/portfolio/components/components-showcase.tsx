@@ -20,7 +20,7 @@ import ThemeSwitcherDemo from "@/registry/examples/theme-switcher-demo"
 import ThemeToggleEffectDemo from "@/registry/examples/theme-toggle-effect-demo"
 import TwemojiDemo from "@/registry/examples/twemoji-demo"
 import WheelPickerDemo from "@/registry/examples/wheel-picker-demo"
-import { GridItem } from "@/app/(app)/(blocks)/components/showcase/grid-item"
+import { GridItem } from "@/app/(tools)/(app)/(blocks)/components/showcase/grid-item"
 import { getComponentDocs } from "@/features/doc/data/documents"
 
 import { Panel, PanelHeader, PanelTitle, PanelTitleSup } from "./panel"

@@ -1,5 +1,10 @@
 import type { NextConfig } from "next"
 
+import {
+  blogRedirects,
+  inheritedArticleRedirects,
+} from "./src/lib/blog-redirects"
+
 /**
  * Component slugs that used to also render under /blog/<slug> (a shared MDX
  * pool) and were indexed there. After splitting content into category folders
@@ -65,6 +70,7 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["overme-home.localhost", "overme-home.local"],
   devIndicators: false,
   experimental: {
+    globalNotFound: true,
     // Rewrite barrel imports to deep imports so a single icon doesn't pull the
     // whole package into the module graph. Next already optimizes lucide-react,
     // @tabler/icons-react, date-fns and lodash-es by default; these are the
@@ -101,6 +107,9 @@ const nextConfig: NextConfig = {
       : undefined,
   async redirects() {
     return [
+      // Tag handlers use URLSearchParams to keep Unicode safe in Location.
+      ...blogRedirects.filter((route) => !route.source.includes("/tags/")),
+      ...inheritedArticleRedirects,
       {
         source: "/:section(blog|components)/writing-effect-inspired-by-apple",
         destination: "/:section/apple-hello-effect",
@@ -177,11 +186,42 @@ const nextConfig: NextConfig = {
       // silently breaks Accept-based markdown negotiation in production
       beforeFiles: [
         {
-          source: "/:section(blog|components)/:slug.md",
+          source: "/blog/:slug.md",
+          destination: "/blog-content/zh/:slug",
+        },
+        {
+          source: "/en/blog/:slug.md",
+          destination: "/blog-content/en/:slug",
+        },
+        ...["zh", "en"].map((locale) => ({
+          source: `${locale === "en" ? "/en" : ""}/blog/:slug`,
+          destination: `/blog-content/${locale}/:slug`,
+          has: [
+            {
+              type: "header" as const,
+              key: "accept",
+              value: "(?<accept>.*text/markdown.*)",
+            },
+          ],
+        })),
+        { source: "/en/index.md", destination: "/en/llms.txt" },
+        {
+          source: "/en",
+          destination: "/en/llms.txt",
+          has: [
+            {
+              type: "header",
+              key: "accept",
+              value: "(?<accept>.*text/markdown.*)",
+            },
+          ],
+        },
+        {
+          source: "/components/:slug.md",
           destination: "/doc.md/:slug",
         },
         {
-          source: "/:section(blog|components)/:slug",
+          source: "/components/:slug",
           destination: "/doc.md/:slug",
           has: [
             {
