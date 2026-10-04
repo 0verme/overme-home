@@ -1,4 +1,10 @@
-import { blogPath, dictionaries, homePath, type Locale } from "@/lib/i18n"
+import {
+  blogPath,
+  dictionaries,
+  homePath,
+  tokensPath,
+  type Locale,
+} from "@/lib/i18n"
 import {
   PersonalNavigation,
   type SearchEntry,
@@ -18,6 +24,7 @@ export function PersonalShell({
   const entries: SearchEntry[] = [
     { title: t.home, href: homePath(locale) },
     { title: t.blog, href: blogPath(locale) },
+    { title: t.aiUsage, href: tokensPath(locale) },
     { title: t.work, href: `${homePath(locale)}#projects` },
     { title: t.about, href: `${homePath(locale)}#hello` },
     ...getBlogPosts(locale).map((post) => ({

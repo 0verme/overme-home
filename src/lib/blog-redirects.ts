@@ -41,7 +41,7 @@ export const BLOG_MIGRATION = (["zh", "en"] as const).flatMap((locale) => {
       source: `${prefix}/${page}/`,
       destination: blog,
     })),
-    { source: `${prefix}/tokens/`, destination: "https://token.overme.cn/" },
+    { source: `${prefix}/tokens/`, destination: `${prefix}/tokens` },
     { source: `${prefix}/rss.xml`, destination: `${blog}/rss` },
     ...slugs
       .filter((slug) => locale === "zh" || slug !== "data-warehouse-dilemma")
@@ -57,7 +57,8 @@ export const BLOG_MIGRATION = (["zh", "en"] as const).flatMap((locale) => {
 })
 
 export const blogRedirects = BLOG_MIGRATION.filter(
-  ({ source }) => source !== "/" && source !== "/en/"
+  ({ source, destination }) =>
+    source.replace(/\/$/, "") !== destination.replace(/\/$/, "")
 ).map(({ source, destination }) => ({
   source: source.replace(/\/$/, ""),
   destination,

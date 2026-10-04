@@ -152,7 +152,7 @@ describe("localized document content", () => {
         `](${prefix}/blog/ai-only-interprets-ledger-actions)`
       )
       expect(content).toContain(locale === "en" ? "](/en#hello)" : "](/#hello)")
-      expect(content).toContain("](https://token.overme.cn/)")
+      expect(content).toContain(`](${prefix}/tokens)`)
       expect(content).not.toMatch(/\]\(\/(en\/)?(posts|about|tokens)\//)
     }
   })

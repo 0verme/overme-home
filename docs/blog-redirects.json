@@ -31,7 +31,7 @@
   },
   {
     "source": "https://blog.overme.cn/tokens/",
-    "destination": "https://token.overme.cn/",
+    "destination": "https://overme.cn/tokens",
     "status": 308
   },
   {
@@ -141,7 +141,7 @@
   },
   {
     "source": "https://blog.overme.cn/en/tokens/",
-    "destination": "https://token.overme.cn/",
+    "destination": "https://overme.cn/en/tokens",
     "status": 308
   },
   {

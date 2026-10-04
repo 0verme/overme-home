@@ -12,7 +12,7 @@
 
 本次只在新站实现旧路径兼容，未改变旧博客、旧个人站、DNS、托管或部署。下表是未来旧博客域名应配置的 308 重定向清单，不代表已经上线。机器可读版本见 [blog-redirects.json](./blog-redirects.json)。它覆盖原 sitemap 的 39 个页面和两个 RSS，根路径的跨域跳转仅适用于 blog.overme.cn，不能把它作为新站自身路径的跳转规则。
 
-旧标签进入相应语言的列表筛选；归档和搜索合并入博客列表（支持 q、tag、year）；AI 足迹保留到 token.overme.cn 的外链。两篇继承教程的旧 /blog 路径转向 chanhdai.com 原文，避免归属错误。
+旧标签进入相应语言的列表筛选；归档和搜索合并入博客列表（支持 q、tag、year）；AI 足迹迁入 /tokens 与 /en/tokens，使用公开聚合接口并沿用本站样式。两篇继承教程的旧 /blog 路径转向 chanhdai.com 原文，避免归属错误。
 
 后续切换旧域名时，应先部署并验收新站，再在旧域名托管层启用下表规则；保留来源查询参数，检查 308、Location、最终 200 及无循环。若新站异常，先撤销旧域名跳转，恢复旧站，文章源仓库不需要修改。当前旧博客仍正常提供内容，不应提前宣称迁移已上线。
 
@@ -35,7 +35,7 @@
 | https://blog.overme.cn/archives/                                   | https://overme.cn/blog                                          |
 | https://blog.overme.cn/search/                                     | https://overme.cn/blog                                          |
 | https://blog.overme.cn/tags/                                       | https://overme.cn/blog                                          |
-| https://blog.overme.cn/tokens/                                     | https://token.overme.cn/                                        |
+| https://blog.overme.cn/tokens/                                     | https://overme.cn/tokens                                        |
 | https://blog.overme.cn/rss.xml                                     | https://overme.cn/blog/rss                                      |
 | https://blog.overme.cn/posts/hello-world/                          | https://overme.cn/blog/hello-world                              |
 | https://blog.overme.cn/posts/building-lineage-viewer/              | https://overme.cn/blog/building-lineage-viewer                  |
@@ -57,7 +57,7 @@
 | https://blog.overme.cn/en/archives/                                | https://overme.cn/en/blog                                       |
 | https://blog.overme.cn/en/search/                                  | https://overme.cn/en/blog                                       |
 | https://blog.overme.cn/en/tags/                                    | https://overme.cn/en/blog                                       |
-| https://blog.overme.cn/en/tokens/                                  | https://token.overme.cn/                                        |
+| https://blog.overme.cn/en/tokens/                                  | https://overme.cn/en/tokens                                     |
 | https://blog.overme.cn/en/rss.xml                                  | https://overme.cn/en/blog/rss                                   |
 | https://blog.overme.cn/en/posts/hello-world/                       | https://overme.cn/en/blog/hello-world                           |
 | https://blog.overme.cn/en/posts/building-lineage-viewer/           | https://overme.cn/en/blog/building-lineage-viewer               |
@@ -70,3 +70,7 @@
 | https://blog.overme.cn/en/tags/system-design/                      | https://overme.cn/en/blog?tag=System%20Design                   |
 | https://blog.overme.cn/en/tags/notes/                              | https://overme.cn/en/blog?tag=Notes                             |
 | https://blog.overme.cn/en/tags/writing/                            | https://overme.cn/en/blog?tag=Writing                           |
+
+## AI 足迹页面
+
+2026-10-04：新增 `/tokens` 与 `/en/tokens`。固定最近 30 天，服务端读取 AIUsage 公开 overview 接口，缓存 300 秒、超时 8 秒，只传递页面所需的聚合字段。模型占比按 Token，服务商占比按预估美元费用。缺失项与请求失败明确显示，不回退为演示数据。迁移清单保留旧站 URL 映射，本站跳转规则排除规范化后指向自身的路径。此次变更不部署旧站重定向或切换域名。

@@ -9,6 +9,7 @@ import {
   blogPath,
   dictionaries,
   homePath,
+  tokensPath,
   type Locale,
 } from "@/lib/i18n"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -48,6 +49,7 @@ export function PersonalNavigation({
   const links = [
     { title: t.blog, href: blogPath(locale) },
     { title: t.work, href: `${homePath(locale)}#projects` },
+    { title: t.aiUsage, href: tokensPath(locale) },
     { title: t.about, href: `${homePath(locale)}#hello` },
   ]
   const results = entries.filter((entry) =>
@@ -103,13 +105,13 @@ export function PersonalNavigation({
         </div>
       </header>
       <nav
-        className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 gap-1 rounded-xl border bg-background/95 p-1 shadow-md backdrop-blur sm:hidden"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-40 flex w-max max-w-[calc(100%-1rem)] -translate-x-1/2 gap-0.5 rounded-xl border bg-background/95 p-1 shadow-md backdrop-blur sm:hidden"
         aria-label={t.home}
       >
         {[{ title: t.home, href: homePath(locale) }, ...links].map((link) => (
           <a
             key={link.href}
-            className="rounded-lg px-3 py-2 text-sm whitespace-nowrap hover:bg-accent"
+            className="rounded-lg p-2 text-xs whitespace-nowrap hover:bg-accent min-[380px]:text-sm"
             href={link.href}
           >
             {link.title}

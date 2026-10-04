@@ -8,6 +8,10 @@ export function homePath(locale: Locale) {
   return locale === "en" ? "/en" : "/"
 }
 
+export function tokensPath(locale: Locale) {
+  return locale === "en" ? "/en/tokens" : "/tokens"
+}
+
 export function blogPath(locale: Locale, slug?: string) {
   return `${locale === "en" ? "/en" : ""}/blog${slug ? `/${slug}` : ""}` as Route
 }

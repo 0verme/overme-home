@@ -78,7 +78,10 @@ describe("bilingual publishing and migration", () => {
   it("covers the old 39-page sitemap and two feeds without self redirects", () => {
     expect(BLOG_MIGRATION).toHaveLength(41)
     expect(new Set(BLOG_MIGRATION.map((item) => item.source)).size).toBe(41)
-    expect(blogRedirects).toHaveLength(39)
+    expect(blogRedirects).toHaveLength(37)
+    expect(
+      blogRedirects.some(({ source }) => /^(\/en)?\/tokens$/.test(source))
+    ).toBe(false)
     for (const item of blogRedirects) {
       expect(item.destination).not.toBe(item.source)
       expect(item.permanent).toBe(true)
