@@ -3,7 +3,7 @@ import { getUser } from "@/features/portfolio/data/user"
 
 import { FlipSentences } from "./flip-sentences"
 import { HandwrittenArrow, HandwrittenNote } from "./handwritten-note"
-import { NeutralIsometricPlaceholder } from "./neutral-isometric-placeholder"
+import { OvermeIsometricMonogram } from "./overme-isometric-monogram"
 import { PronounceMyName } from "./pronounce-my-name"
 
 export function ProfileHeader({ locale = "zh" }: { locale?: Locale }) {
@@ -11,24 +11,22 @@ export function ProfileHeader({ locale = "zh" }: { locale?: Locale }) {
   return (
     <div className="screen-line-bottom grid grid-cols-[auto_1fr] grid-rows-[1fr_auto] overflow-y-clip border-x screen-line-bottom-border after:z-1">
       <figure className="relative col-span-2 grid min-h-48 place-items-center p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
-        <NeutralIsometricPlaceholder />
+        <OvermeIsometricMonogram />
 
         <HandwrittenNote
-          className="bottom-20 left-full hidden w-36 flex-col items-start pointer-fine:xl:flex"
+          className="top-20 right-0 hidden w-36 flex-col items-start pointer-fine:xl:flex"
           aria-hidden
         >
           <HandwrittenArrow className="-scale-y-100 -rotate-6" />
           <span className="ml-3 -rotate-6">
-            {locale === "zh"
-              ? "移动光标，探索结构"
-              : "move the cursor, explore the structure"}
+            {locale === "zh" ? "0V / 线条实验" : "0V / line study"}
           </span>
         </HandwrittenNote>
 
         <figcaption className="pointer-events-none absolute right-2 bottom-2 text-sm/none tracking-wide text-[color-mix(in_oklab,var(--muted-foreground)_60%,var(--background))] tabular-nums select-none sm:right-4 sm:bottom-4">
           {locale === "zh"
-            ? "图 1. 从数据到结构"
-            : "Fig. 1. From data to structure"}
+            ? "图 1. 个人标识实验"
+            : "Fig. 1. Personal mark study"}
         </figcaption>
       </figure>
 

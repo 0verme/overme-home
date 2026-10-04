@@ -1,4 +1,4 @@
 import type { Bookmark } from "./types"
 
-/** Replace this starter list with your own bookmarks. */
+/** Add bookmarks selected for public display here. */
 export const BOOKMARKS: Bookmark[] = []
