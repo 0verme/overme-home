@@ -56,6 +56,8 @@ const legacyBlogComponentRedirects = LEGACY_BLOG_COMPONENT_SLUGS.map(
 )
 
 const nextConfig: NextConfig = {
+  // CI packages a Node server; other deployment targets keep their default output.
+  output: process.env.BUILD_STANDALONE === "1" ? "standalone" : undefined,
   /**
    * Stamped once per build and inlined. Reading the clock at render time would
    * instead report whenever a page was regenerated, which drifts on the ISR
