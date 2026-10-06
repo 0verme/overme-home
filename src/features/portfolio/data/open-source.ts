@@ -1,32 +1,18 @@
 import type { Locale } from "@/lib/i18n"
 
-export const OPEN_SOURCE_CONTRIBUTIONS: {
-  number: number
-  url: string
-  title: Record<Locale, string>
-}[] = [
+type FeaturedOpenSourceRepo = {
+  repo: string
+  name: string
+  description: Record<Locale, string>
+}
+
+export const FEATURED_OPEN_SOURCE_REPOS = [
   {
-    number: 10323,
-    url: "https://github.com/t8y2/dbx/pull/10323",
-    title: {
-      zh: "插件卸载失败时保持状态一致",
-      en: "Keep state consistent when plugin removal fails",
+    repo: "t8y2/dbx",
+    name: "DBX",
+    description: {
+      zh: "插件系统 · Host API · Workbench · 稳定性",
+      en: "Plugin system · Host API · Workbench · Reliability",
     },
   },
-  {
-    number: 10319,
-    url: "https://github.com/t8y2/dbx/pull/10319",
-    title: {
-      zh: "插件变更后刷新前端状态",
-      en: "Refresh the frontend after plugin changes",
-    },
-  },
-  {
-    number: 10244,
-    url: "https://github.com/t8y2/dbx/pull/10244",
-    title: {
-      zh: "从右键菜单打开对应插件的 Workbench",
-      en: "Open the matching plugin Workbench from the context menu",
-    },
-  },
-]
+] as const satisfies readonly FeaturedOpenSourceRepo[]

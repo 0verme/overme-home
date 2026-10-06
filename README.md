@@ -49,8 +49,9 @@ pnpm build
 
 - `src/registry/` — reusable components, hooks, blocks, examples, and styles
 - `src/features/doc/content/` — MDX blog and component documentation
-- `src/features/portfolio/data/` — localized public profile and selected projects
+- `src/features/portfolio/data/` — localized public profile, selected projects, and open-source stats
 - `src/features/doc/content/blog/{zh,en}/` — articles paired by `translationKey`
+- [`docs/OPEN_SOURCE_STATS.md`](./docs/OPEN_SOURCE_STATS.md) — featured repos and automatic stats refresh
 - `src/config/` — site, registry, and structured-data configuration
 - `docs/PHASE0_AUDIT.md` — retained scope and baseline verification notes
 
