@@ -14,12 +14,12 @@ export function ProfileHeader({ locale = "zh" }: { locale?: Locale }) {
         <OvermeIsometricMonogram />
 
         <HandwrittenNote
-          className="top-20 right-0 hidden w-36 flex-col items-start pointer-fine:xl:flex"
+          className="top-14 right-2 hidden w-44 flex-col items-start pointer-fine:xl:flex"
           aria-hidden
         >
           <HandwrittenArrow className="-scale-y-100 -rotate-6" />
-          <span className="ml-3 -rotate-6">
-            {locale === "zh" ? "0V / 线条实验" : "0V / line study"}
+          <span className="ml-3 -rotate-6 whitespace-nowrap">
+            {locale === "zh" ? "OVER / 线条实验" : "OVER / line study"}
           </span>
         </HandwrittenNote>
 
