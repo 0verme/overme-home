@@ -2,7 +2,7 @@ import { readFile, rename, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
-import { FEATURED_OPEN_SOURCE_REPOS } from "../features/portfolio/data/open-source"
+import { EXCLUDED_OPEN_SOURCE_REPOS } from "../features/portfolio/data/open-source"
 import {
   EMPTY_OPEN_SOURCE_STATS,
   fetchOpenSourceStats,
@@ -30,8 +30,9 @@ async function readSnapshot(): Promise<OpenSourceStatsSnapshot> {
 
 const current = await readSnapshot()
 const result = await refreshOpenSourceStats(current, () =>
-  fetchOpenSourceStats(FEATURED_OPEN_SOURCE_REPOS, {
+  fetchOpenSourceStats({
     token: process.env.GITHUB_TOKEN,
+    excludedRepos: EXCLUDED_OPEN_SOURCE_REPOS,
   })
 )
 
