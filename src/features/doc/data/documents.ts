@@ -53,21 +53,29 @@ function readCategory(category: string, locale?: Locale): Doc[] {
   })
 }
 
+function compareCreatedAt(a: Doc, b: Doc): number {
+  return (
+    new Date(b.metadata.createdAt).getTime() -
+    new Date(a.metadata.createdAt).getTime()
+  )
+}
+
+function sortBlogPosts(docs: Doc[]): Doc[] {
+  return docs.sort(compareCreatedAt)
+}
+
 function sortDocs(docs: Doc[]): Doc[] {
   return docs.sort((a, b) => {
     if (a.metadata.pinned && !b.metadata.pinned) return -1
     if (!a.metadata.pinned && b.metadata.pinned) return 1
 
-    return (
-      new Date(b.metadata.createdAt).getTime() -
-      new Date(a.metadata.createdAt).getTime()
-    )
+    return compareCreatedAt(a, b)
   })
 }
 
 /** Blog slugs are unique within a locale, rather than across every document. */
 export const getBlogPosts = cache((locale: Locale = "zh") => {
-  return sortDocs(readCategory(BLOG_CATEGORY, locale))
+  return sortBlogPosts(readCategory(BLOG_CATEGORY, locale))
 })
 
 export function getBlogPost(slug: string, locale: Locale = "zh") {
@@ -92,6 +100,8 @@ export function getDocBySlug(slug: string) {
 }
 
 export function getDocsByCategory(category: string) {
+  if (category === BLOG_CATEGORY) return getBlogPosts("zh")
+
   return getAllDocs().filter((doc) => doc.metadata.category === category)
 }
 

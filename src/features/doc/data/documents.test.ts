@@ -46,6 +46,23 @@ describe("localized document content", () => {
     }
   )
 
+  it.each(["zh", "en"] as const)(
+    "sorts %s blog posts by publication date regardless of pinned status",
+    (locale) => {
+      const posts = getBlogPosts(locale)
+
+      expect(posts.map((post) => post.slug)).toEqual([
+        "data-warehouse-dilemma",
+        "building-lineage-viewer",
+        "hello-world",
+        "ai-only-interprets-ledger-actions",
+      ])
+      expect(posts[0].metadata.pinned).not.toBe(true)
+      expect(posts[0].metadata.createdAt).toBe("2026-08-21T09:00:00+08:00")
+      expect(posts[1].metadata.createdAt).toBe("2026-08-12T12:00:00+08:00")
+    }
+  )
+
   it("looks up each language explicitly and never crosses document categories", () => {
     expect(getBlogPost("hello-world", "zh")?.metadata.title).toBe(
       "为什么写「见远而行」"
@@ -140,12 +157,20 @@ describe("localized document content", () => {
     }
   })
 
-  it("keeps neighbouring posts within the selected language", () => {
+  it("keeps neighbouring posts in publication order within the selected language", () => {
     const posts = getBlogPosts("en")
-    const { previous, next } = findNeighbour(posts, posts[1].slug)
+    expect(posts.map((post) => post.slug)).toEqual([
+      "data-warehouse-dilemma",
+      "building-lineage-viewer",
+      "hello-world",
+      "ai-only-interprets-ledger-actions",
+    ])
+    const { previous, next } = findNeighbour(posts, "building-lineage-viewer")
 
     expect(previous).toEqual(posts[0])
     expect(next).toEqual(posts[2])
+    expect(previous?.slug).toBe("data-warehouse-dilemma")
+    expect(next?.slug).toBe("hello-world")
     expect(previous?.metadata.locale).toBe("en")
     expect(next?.metadata.locale).toBe("en")
     expect(findNeighbour(posts, "missing-post")).toEqual({

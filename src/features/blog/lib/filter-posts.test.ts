@@ -14,6 +14,16 @@ const posts: BlogPreview[] = [
     },
   },
   {
+    slug: "notes",
+    metadata: {
+      title: "Notes",
+      description: "Writing",
+      tags: ["数据工程"],
+      createdAt: "2026-08-11",
+      updatedAt: "2026-08-11",
+    },
+  },
+  {
     slug: "ai",
     metadata: {
       title: "AI boundaries",
@@ -21,15 +31,6 @@ const posts: BlogPreview[] = [
       tags: ["AI"],
       createdAt: "2025-10-12",
       updatedAt: "2025-10-12",
-    },
-  },
-  {
-    slug: "notes",
-    metadata: {
-      title: "Notes",
-      description: "Writing",
-      createdAt: "2026-08-11",
-      updatedAt: "2026-08-11",
     },
   },
 ]
@@ -44,7 +45,7 @@ describe("blog filters", () => {
     ).toEqual(["lineage"])
   })
 
-  it("combines tag and year with the query and preserves source order", () => {
+  it("combines filters and preserves the source publication order", () => {
     expect(
       filterPosts(posts, { q: "sql", tag: "数据工程", year: "2026" }).map(
         (post) => post.slug
@@ -52,6 +53,9 @@ describe("blog filters", () => {
     ).toEqual(["lineage"])
     expect(
       filterPosts(posts, { year: "2026" }).map((post) => post.slug)
+    ).toEqual(["lineage", "notes"])
+    expect(
+      filterPosts(posts, { tag: "数据工程" }).map((post) => post.slug)
     ).toEqual(["lineage", "notes"])
   })
 

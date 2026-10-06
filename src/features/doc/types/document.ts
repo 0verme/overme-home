@@ -27,7 +27,7 @@ export type DocMetadata = {
   new?: boolean
   updated?: boolean
   /**
-   * Flag to pin the post to the top of the list.
+   * Flag to feature the post on the homepage.
    */
   pinned?: boolean
   /**
