@@ -2,7 +2,7 @@ import { ArrowUpRightIcon } from "lucide-react"
 
 import type { Locale } from "@/lib/i18n"
 import generatedStats from "@/features/portfolio/data/generated/open-source-stats.json"
-import { FEATURED_OPEN_SOURCE_REPOS } from "@/features/portfolio/data/open-source"
+import { OPEN_SOURCE_REPO_METADATA } from "@/features/portfolio/data/open-source"
 import {
   formatPullRequestCount,
   formatStarCount,
@@ -15,9 +15,7 @@ import { PanelTitleCopy } from "./panel-title-copy"
 const OPEN_SOURCE_STATS = generatedStats as OpenSourceStatsSnapshot
 
 export function OpenSource({ locale }: { locale: Locale }) {
-  const statsByRepo = new Map(
-    OPEN_SOURCE_STATS.featuredRepos.map((stats) => [stats.repo, stats])
-  )
+  const summary = OPEN_SOURCE_STATS.summary
 
   return (
     <Panel id="open-source">
@@ -36,51 +34,69 @@ export function OpenSource({ locale }: { locale: Locale }) {
             : "Ongoing contributions to open-source database and developer tools."}
         </p>
         <ul className="divide-y divide-dashed divide-line border-y border-dashed border-line">
-          {FEATURED_OPEN_SOURCE_REPOS.map((repo) => {
-            const stats = statsByRepo.get(repo.repo)
+          {OPEN_SOURCE_STATS.featuredRepos.map((repo) => {
+            const metadata = OPEN_SOURCE_REPO_METADATA[repo.repo]
+            const name =
+              metadata?.name ?? repo.repo.split("/").at(-1) ?? repo.repo
+            const description = metadata?.description?.[locale]
 
             return (
               <li key={repo.repo} className="py-4">
                 <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                   <a
                     className="inline-flex w-fit items-center gap-1.5 font-heading text-base font-medium transition-colors hover:text-muted-foreground"
-                    href={`https://github.com/${repo.repo}`}
+                    href={repo.url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {repo.name}
+                    {name}
                     <ArrowUpRightIcon
                       className="size-3.5 text-muted-foreground"
                       aria-hidden
                     />
                   </a>
-                  {stats ? (
-                    <p className="flex flex-wrap items-center gap-x-2 font-mono text-xs text-muted-foreground tabular-nums">
-                      <span>{formatStarCount(stats.stars)} Stars</span>
-                      <span aria-hidden>·</span>
-                      <span>
-                        {formatPullRequestCount(stats.mergedPrs)}{" "}
-                        {locale === "zh" ? "已合并 PR" : "merged PRs"}
-                      </span>
-                    </p>
-                  ) : null}
+                  <p className="flex flex-wrap items-center gap-x-2 font-mono text-xs text-muted-foreground tabular-nums">
+                    <span>{formatStarCount(repo.stars)} Stars</span>
+                    <span aria-hidden>·</span>
+                    <span>
+                      {formatPullRequestCount(repo.mergedPrs)}{" "}
+                      {locale === "zh"
+                        ? "已合并 PR"
+                        : repo.mergedPrs === 1
+                          ? "merged PR"
+                          : "merged PRs"}
+                    </span>
+                  </p>
                 </div>
-                <p className="mt-1 text-sm/relaxed text-muted-foreground">
-                  {repo.description[locale]}
-                </p>
+                {description ? (
+                  <p className="mt-1 text-sm/relaxed text-muted-foreground">
+                    {description}
+                  </p>
+                ) : null}
               </li>
             )
           })}
         </ul>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {OPEN_SOURCE_STATS.global ? (
+          {summary ? (
             <p className="text-sm text-muted-foreground">
-              {formatPullRequestCount(OPEN_SOURCE_STATS.global.submittedPrs)}
-              {locale === "zh" ? " 个 PR 已提交 · " : " PRs submitted · "}
-              <strong className="font-medium text-foreground">
-                {formatPullRequestCount(OPEN_SOURCE_STATS.global.mergedPrs)}
-                {locale === "zh" ? " 个已合并" : " merged"}
-              </strong>
+              {locale === "zh" ? (
+                <>
+                  {summary.qualifiedRepoCount} 个 1k+ Stars 开源项目 ·{" "}
+                  <strong className="font-medium text-foreground">
+                    {formatPullRequestCount(summary.mergedPrs)} 个已合并 PR
+                  </strong>
+                </>
+              ) : (
+                <>
+                  {summary.qualifiedRepoCount} open-source projects with 1k+
+                  Stars ·{" "}
+                  <strong className="font-medium text-foreground">
+                    {formatPullRequestCount(summary.mergedPrs)}{" "}
+                    {summary.mergedPrs === 1 ? "merged PR" : "merged PRs"}
+                  </strong>
+                </>
+              )}
             </p>
           ) : null}
           <a
