@@ -4,13 +4,12 @@ import { ArrowRightIcon } from "lucide-react"
 import { blogPath, formatDate, type Locale } from "@/lib/i18n"
 import { getBlogPosts } from "@/features/doc/data/documents"
 
+import { selectFeaturedPosts } from "../data/featured-posts"
 import { Panel, PanelHeader, PanelTitle } from "./panel"
 import { PanelTitleCopy } from "./panel-title-copy"
 
 export function FeaturedPosts({ locale }: { locale: Locale }) {
-  const posts = getBlogPosts(locale)
-    .filter((post) => post.metadata.pinned)
-    .slice(0, 2)
+  const posts = selectFeaturedPosts(getBlogPosts(locale))
 
   if (posts.length === 0) return null
 
