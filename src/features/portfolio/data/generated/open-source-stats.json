@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T11:59:38.692Z",
+  "generatedAt": "2026-10-13T11:48:24.828Z",
   "summary": {
     "qualifiedRepoCount": 2,
     "mergedPrs": 129
@@ -8,13 +8,13 @@
     {
       "repo": "t8y2/dbx",
       "url": "https://github.com/t8y2/dbx",
-      "stars": 25944,
+      "stars": 26311,
       "mergedPrs": 128
     },
     {
       "repo": "binaricat/Netcatty",
       "url": "https://github.com/binaricat/Netcatty",
-      "stars": 6534,
+      "stars": 6558,
       "mergedPrs": 1
     }
   ]
