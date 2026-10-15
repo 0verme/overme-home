@@ -12,7 +12,7 @@ describe("featured blog posts", () => {
 
       expect(posts.map((post) => post.slug)).toEqual([
         "professional-loneliness",
-        "building-lineage-viewer",
+        "data-warehouse-dilemma",
       ])
       expect(posts.every((post) => post.metadata.pinned === true)).toBe(true)
       expect(posts[0].metadata.createdAt > posts[1].metadata.createdAt).toBe(

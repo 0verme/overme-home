@@ -61,7 +61,7 @@ describe("localized document content", () => {
       ])
       expect(posts[0].metadata.pinned).toBe(true)
       expect(posts[0].metadata.createdAt).toBe("2026-10-15")
-      expect(posts[1].metadata.pinned).not.toBe(true)
+      expect(posts[1].metadata.pinned).toBe(true)
       expect(posts[1].metadata.createdAt).toBe("2026-08-21T09:00:00+08:00")
       expect(posts[2].metadata.createdAt).toBe("2026-08-12T12:00:00+08:00")
     }
