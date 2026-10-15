@@ -46,7 +46,7 @@ describe("bilingual publishing and migration", () => {
       const rss = renderBlogRss(locale)
       const index = renderBlogIndex(locale)
       const llms = renderLlmsIndex(locale)
-      expect(rss.match(/<item>/g)).toHaveLength(4)
+      expect(rss.match(/<item>/g)).toHaveLength(5)
       expect(rss).toContain(
         `<language>${locale === "zh" ? "zh-CN" : "en"}</language>`
       )
