@@ -61,6 +61,7 @@ describe("localized document content", () => {
         "hello-world",
         "ai-only-interprets-ledger-actions",
       ])
+      expect(posts[0].metadata.pinned).toBe(true)
       expect(posts[0].metadata.createdAt).toBe("2026-11-22T21:00:00+08:00")
       expect(posts[1].metadata.pinned).toBe(true)
       expect(posts[1].metadata.createdAt).toBe("2026-10-15")

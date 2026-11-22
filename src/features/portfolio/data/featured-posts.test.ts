@@ -11,8 +11,8 @@ describe("featured blog posts", () => {
       const posts = selectFeaturedPosts(getBlogPosts(locale))
 
       expect(posts.map((post) => post.slug)).toEqual([
+        "courage-of-youth",
         "professional-loneliness",
-        "data-warehouse-dilemma",
       ])
       expect(posts.every((post) => post.metadata.pinned === true)).toBe(true)
       expect(posts[0].metadata.createdAt > posts[1].metadata.createdAt).toBe(
