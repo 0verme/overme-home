@@ -19,6 +19,7 @@ import {
 const slugs = [
   "ai-only-interprets-ledger-actions",
   "building-lineage-viewer",
+  "courage-of-youth",
   "data-warehouse-dilemma",
   "hello-world",
   "professional-loneliness",
@@ -53,17 +54,19 @@ describe("localized document content", () => {
       const posts = getBlogPosts(locale)
 
       expect(posts.map((post) => post.slug)).toEqual([
+        "courage-of-youth",
         "professional-loneliness",
         "data-warehouse-dilemma",
         "building-lineage-viewer",
         "hello-world",
         "ai-only-interprets-ledger-actions",
       ])
-      expect(posts[0].metadata.pinned).toBe(true)
-      expect(posts[0].metadata.createdAt).toBe("2026-10-15")
+      expect(posts[0].metadata.createdAt).toBe("2026-11-22T21:00:00+08:00")
       expect(posts[1].metadata.pinned).toBe(true)
-      expect(posts[1].metadata.createdAt).toBe("2026-08-21T09:00:00+08:00")
-      expect(posts[2].metadata.createdAt).toBe("2026-08-12T12:00:00+08:00")
+      expect(posts[1].metadata.createdAt).toBe("2026-10-15")
+      expect(posts[2].metadata.pinned).toBe(true)
+      expect(posts[2].metadata.createdAt).toBe("2026-08-21T09:00:00+08:00")
+      expect(posts[3].metadata.createdAt).toBe("2026-08-12T12:00:00+08:00")
     }
   )
 
@@ -164,6 +167,7 @@ describe("localized document content", () => {
   it("keeps neighbouring posts in publication order within the selected language", () => {
     const posts = getBlogPosts("en")
     expect(posts.map((post) => post.slug)).toEqual([
+      "courage-of-youth",
       "professional-loneliness",
       "data-warehouse-dilemma",
       "building-lineage-viewer",
@@ -172,8 +176,8 @@ describe("localized document content", () => {
     ])
     const { previous, next } = findNeighbour(posts, "building-lineage-viewer")
 
-    expect(previous).toEqual(posts[1])
-    expect(next).toEqual(posts[3])
+    expect(previous).toEqual(posts[2])
+    expect(next).toEqual(posts[4])
     expect(previous?.slug).toBe("data-warehouse-dilemma")
     expect(next?.slug).toBe("hello-world")
     expect(previous?.metadata.locale).toBe("en")
